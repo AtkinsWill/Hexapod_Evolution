@@ -62,6 +62,7 @@ public class Simulation_Control : MonoBehaviour
             Debug.Log(weights);
             weights[i] = Random.Range(1f, 10);
         }
+
         spawnHexapods();
 
     }
