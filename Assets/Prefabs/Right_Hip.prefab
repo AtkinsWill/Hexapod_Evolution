@@ -314,7 +314,6 @@ GameObject:
   - component: {fileID: 5828317811144307727}
   - component: {fileID: 525228713638667863}
   - component: {fileID: 3793591867992811491}
-  - component: {fileID: -3719384501040231300}
   - component: {fileID: 4143555826488338693}
   m_Layer: 0
   m_Name: Right_Hip
@@ -402,24 +401,6 @@ SphereCollider:
   serializedVersion: 2
   m_Radius: 0.5
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &-3719384501040231300
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4643522222970485193}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c1b1664173740b046b5bed4a2620f942, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  jointAngleTargets:
-  - 1539.3712
-  - 1539.3712
-  - 1539.3712
-  limbDimensions: {x: 0, y: 0, z: 0}
-  knee: {fileID: 151434801671013071}
 --- !u!171741748 &4143555826488338693
 ArticulationBody:
   m_ObjectHideFlags: 0

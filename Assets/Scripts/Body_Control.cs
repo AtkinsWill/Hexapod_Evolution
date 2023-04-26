@@ -4,43 +4,23 @@ using UnityEngine;
 
 public class Body_Control : MonoBehaviour
 {
-    public List<float> fullJointTargets;
-    public List<float> actualJointTargets;
-    public GameObject[] legs;
-    public int DoF;
-    public ArticulationBody artiulationBody;
+    public Leg_Control leg_control;
+
 
     // Start is called before the first frame update
     void Start()
     {
-        
-        artiulationBody = GetComponent<ArticulationBody>();
-        DoF = 30;
-        fullJointTargets = new List<float>(DoF);
-        for (int i = 0; i < DoF; i++)
-        {
-            fullJointTargets.Add(0.0f);
-        }
-        actualJointTargets = new List<float>(3);
-        for (int i = 0; i < 3; i++)
-        {
-            actualJointTargets.Add(0.0f);
-        }
+        leg_control = GetComponent<Leg_Control>();
+ 
     }
 
     // Update is called once per frame
     void Update()
     {
-        for (int legJoint = 6; legJoint < DoF; legJoint += 4)
-        {
-            Debug.Log(legJoint);
-            fullJointTargets[legJoint] = actualJointTargets[0];
-            fullJointTargets[legJoint+1] = actualJointTargets[1];
-            fullJointTargets[legJoint+3] = actualJointTargets[2];
+        leg_control.actualJointTargets[1, 1] += 0.001f;
+        leg_control.actualJointTargets[2, 2] += 0.001f;
+        leg_control.actualJointTargets[4, 1] += 0.001f;
+        leg_control.actualJointTargets[5, 0] += 0.001f;
 
-        }
-        
-        artiulationBody.SetDriveTargets(fullJointTargets);
- 
     }
 }

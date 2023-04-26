@@ -12,7 +12,6 @@ GameObject:
   - component: {fileID: 9120712707048449328}
   - component: {fileID: 9120712707048449329}
   - component: {fileID: 9120712707048449334}
-  - component: {fileID: 9120712707048449335}
   - component: {fileID: 5991010102533694788}
   m_Layer: 0
   m_Name: Left_Hip
@@ -100,21 +99,6 @@ SphereCollider:
   serializedVersion: 2
   m_Radius: 0.5
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &9120712707048449335
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9120712706982673723}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c1b1664173740b046b5bed4a2620f942, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  jointAngleTargets: {x: 0, y: 0, z: 0}
-  limbDimensions: {x: 0, y: 0, z: 0}
-  knee: {fileID: 9120712707468542492}
 --- !u!171741748 &5991010102533694788
 ArticulationBody:
   m_ObjectHideFlags: 0

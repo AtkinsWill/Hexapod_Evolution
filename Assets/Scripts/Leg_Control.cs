@@ -4,46 +4,38 @@ using UnityEngine;
 
 public class Leg_Control : MonoBehaviour
 {
-
-    public List<float> jointAngleTargets;
-    public Vector3 limbDimensions;
-    //public GameObject hip;
-    public GameObject knee;
-    Vector3 hipEuler;
-    Vector3 kneeEuler;
+    public List<float> fullJointTargets;
+    public float[,] actualJointTargets = new float[6, 3] { { 0.0f, 0.0f, 0.0f }, { 0.0f, 0.0f, 0.0f }, { 0.0f, 0.0f, 0.0f }, { 0.0f, 0.0f, 0.0f }, { 0.0f, 0.0f, 0.0f }, { 0.0f, 0.0f, 0.0f } };
+    public int DoF;
 
     // Start is called before the first frame update
     void Start()
     {
+        DoF = 30;
+        fullJointTargets = new List<float>(DoF);
+        for (int i = 0; i < DoF; i++)
+        {
+            fullJointTargets.Add(0.0f);
+        }
+
     }
 
     // Update is called once per frame
     void Update()
     {
-        //jointAngleTargets
-        /*
-        var hipRollMotor = GetComponent<ArticulationBody>().xDrive;
-        var hipYawMotor = GetComponent<ArticulationBody>().yDrive;
-        var kneeRollMotor = knee.transform.GetComponent<ArticulationBody>().xDrive;
-        if (kneeRollMotor != null)
+ 
+        for (int legJoint = 0; legJoint < 6; legJoint++)
         {
-            kneeRollMotor.target = jointAngleTargets[2];
+            int dofOfJoint = (4 * legJoint) + 6;
+            Debug.Log(legJoint);
+            Debug.Log(dofOfJoint);
+            fullJointTargets[dofOfJoint] = actualJointTargets[legJoint, 0];
+            fullJointTargets[dofOfJoint + 1] = actualJointTargets[legJoint, 1];
+            fullJointTargets[dofOfJoint + 3] = actualJointTargets[legJoint, 2];
+
         }
-        else
-        {
-            Debug.Log("Problem");
-        }
-        
 
-        hipRollMotor.target = jointAngleTargets[0];
-        hipYawMotor.target = jointAngleTargets[1];
-        
+        GetComponent<ArticulationBody>().SetDriveTargets(fullJointTargets);
 
-        gameObject.GetComponent<ArticulationBody>().xDrive = hipRollMotor;
-        gameObject.GetComponent<ArticulationBody>().yDrive = hipYawMotor;
-        knee.GetComponent<ArticulationBody>().yDrive = kneeRollMotor;
-
-        */
-        GetComponent<ArticulationBody>().SetDriveTargets(jointAngleTargets);
     }
 }

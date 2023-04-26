@@ -123,35 +123,15 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
---- !u!1 &5847326 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 9120712706982673723, guid: 117888c5256cffd43806f03d7dab009c, type: 3}
-  m_PrefabInstance: {fileID: 538628804}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &5847331 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 9120712707048449332, guid: 117888c5256cffd43806f03d7dab009c, type: 3}
   m_PrefabInstance: {fileID: 538628804}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &226208326 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 9120712706982673723, guid: 117888c5256cffd43806f03d7dab009c, type: 3}
-  m_PrefabInstance: {fileID: 9120712706388044405}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &253828603 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 4643522222970485193, guid: 7d3b01874a9aa0d41a246b10c6c50a32, type: 3}
-  m_PrefabInstance: {fileID: 798865042}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &253828604 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5027204523971395107, guid: 7d3b01874a9aa0d41a246b10c6c50a32, type: 3}
   m_PrefabInstance: {fileID: 798865042}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &335088690 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 4643522222970485193, guid: 7d3b01874a9aa0d41a246b10c6c50a32, type: 3}
-  m_PrefabInstance: {fileID: 4847502664016732938}
   m_PrefabAsset: {fileID: 0}
 --- !u!4 &335088691 stripped
 Transform:
@@ -425,8 +405,9 @@ GameObject:
   - component: {fileID: 668430193}
   - component: {fileID: 668430192}
   - component: {fileID: 668430191}
-  - component: {fileID: 668430195}
+  - component: {fileID: 668430197}
   - component: {fileID: 668430196}
+  - component: {fileID: 668430198}
   m_Layer: 0
   m_Name: Torso
   m_TagString: Untagged
@@ -518,29 +499,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &668430195
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 668430190}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6ba5d0dc0cbcfc749be1143d7da8d393, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  fullJointTargets: []
-  actualJointTargets: []
-  legs:
-  - {fileID: 226208326}
-  - {fileID: 1704876843}
-  - {fileID: 5847326}
-  - {fileID: 335088690}
-  - {fileID: 1567774742}
-  - {fileID: 253828603}
-  DoF: 0
-  artiulationBody: {fileID: 0}
 --- !u!171741748 &668430196
 ArticulationBody:
   m_ObjectHideFlags: 0
@@ -593,6 +551,33 @@ ArticulationBody:
   m_Immovable: 0
   m_UseGravity: 1
   m_CollisionDetectionMode: 0
+--- !u!114 &668430197
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 668430190}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c1b1664173740b046b5bed4a2620f942, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  fullJointTargets: []
+  DoF: 0
+--- !u!114 &668430198
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 668430190}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6ba5d0dc0cbcfc749be1143d7da8d393, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  leg_control: {fileID: 0}
 --- !u!4 &681905985 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 9120712707048449332, guid: 117888c5256cffd43806f03d7dab009c, type: 3}
@@ -990,7 +975,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4143555826488338693, guid: 7d3b01874a9aa0d41a246b10c6c50a32, type: 3}
       propertyPath: m_ParentAnchorPosition.x
-      value: -3
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4143555826488338693, guid: 7d3b01874a9aa0d41a246b10c6c50a32, type: 3}
       propertyPath: m_ParentAnchorPosition.z
@@ -1066,20 +1051,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7d3b01874a9aa0d41a246b10c6c50a32, type: 3}
---- !u!1 &1567774742 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 4643522222970485193, guid: 7d3b01874a9aa0d41a246b10c6c50a32, type: 3}
-  m_PrefabInstance: {fileID: 1310481727}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &1567774743 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5027204523971395107, guid: 7d3b01874a9aa0d41a246b10c6c50a32, type: 3}
   m_PrefabInstance: {fileID: 1310481727}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &1704876843 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 9120712706982673723, guid: 117888c5256cffd43806f03d7dab009c, type: 3}
-  m_PrefabInstance: {fileID: 1708557351}
   m_PrefabAsset: {fileID: 0}
 --- !u!4 &1704876848 stripped
 Transform:
@@ -1135,7 +1110,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5991010102533694788, guid: 117888c5256cffd43806f03d7dab009c, type: 3}
       propertyPath: m_ParentAnchorPosition.x
-      value: -3
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5991010102533694788, guid: 117888c5256cffd43806f03d7dab009c, type: 3}
       propertyPath: m_ParentAnchorPosition.z
@@ -1394,7 +1369,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4143555826488338693, guid: 7d3b01874a9aa0d41a246b10c6c50a32, type: 3}
       propertyPath: m_ParentAnchorPosition.x
-      value: -3
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 4143555826488338693, guid: 7d3b01874a9aa0d41a246b10c6c50a32, type: 3}
       propertyPath: m_ParentAnchorPosition.z
@@ -1551,7 +1526,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5991010102533694788, guid: 117888c5256cffd43806f03d7dab009c, type: 3}
       propertyPath: m_ParentAnchorPosition.x
-      value: -3
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 5991010102533694788, guid: 117888c5256cffd43806f03d7dab009c, type: 3}
       propertyPath: m_ParentAnchorPosition.z
