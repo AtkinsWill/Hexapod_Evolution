@@ -77,7 +77,6 @@ public class Simulation_Control : MonoBehaviour
         angle = 0;
         currentTime = 0;
 
-
     }
 
     void destroyHexapods()
