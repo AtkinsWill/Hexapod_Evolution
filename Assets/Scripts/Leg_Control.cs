@@ -27,8 +27,6 @@ public class Leg_Control : MonoBehaviour
         for (int legJoint = 0; legJoint < 6; legJoint++)
         {
             int dofOfJoint = (4 * legJoint) + 6;
-            Debug.Log(legJoint);
-            Debug.Log(dofOfJoint);
             fullJointTargets[dofOfJoint] = actualJointTargets[legJoint, 0];
             fullJointTargets[dofOfJoint + 1] = actualJointTargets[legJoint, 1];
             fullJointTargets[dofOfJoint + 3] = actualJointTargets[legJoint, 2];

@@ -22,5 +22,16 @@ public class Body_Control : MonoBehaviour
         leg_control.actualJointTargets[4, 1] += 0.001f;
         leg_control.actualJointTargets[5, 0] += 0.001f;
 
+
+    }
+
+    public void setJointTargets(float targetJoints)
+    {
+        for (int i = 0; i<6; i++)
+        {
+            for (int j = 0; j < 3; j++)
+                leg_control.actualJointTargets[i, j] = targetJoints;
+        }
+        
     }
 }
