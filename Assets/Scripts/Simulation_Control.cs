@@ -5,6 +5,9 @@ using UnityEngine;
 public class Simulation_Control : MonoBehaviour
 {
     public int numHexapods;
+    public int set_size;
+    int num_sets;
+    int num_neuron_per_set;
     public GameObject[] hexapods;
     public GameObject hexapodPrefab;
     float angle;
@@ -16,6 +19,7 @@ public class Simulation_Control : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        //initialise random weights with seed.
         hexapods = new GameObject[numHexapods];
         weights = new float[numHexapods];
         for (int i = 0; i < numHexapods; i++)
@@ -71,6 +75,7 @@ public class Simulation_Control : MonoBehaviour
     {
         for (int i = 0; i < numHexapods; i++)
         {
+            //preferable if in this loop weights get assigned to robots?
             GameObject hexapod = Instantiate(hexapodPrefab, new Vector3(0, 3, (float)i * 15), Quaternion.identity) as GameObject;
             hexapods[i] = hexapod;
         }
@@ -87,3 +92,4 @@ public class Simulation_Control : MonoBehaviour
         }
     }
 }
+ 
