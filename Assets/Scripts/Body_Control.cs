@@ -10,11 +10,11 @@ public class Body_Control : MonoBehaviour
     private const int NeuronsPerSet = 5;
     private const int AngleInputs = 3;
     //private const int Threshold = 0;
-    private double[][] neuronStates;
-    public double[][][] intraNeuronWeights;
-    public double[][] exoNeuronWeights;
-    public double[][][] inputWeights;
-    private double[][] angleInputs;
+    private double[,] neuronStates;
+    public double[,,] intraNeuronWeights;
+    public double[,] exoNeuronWeights;
+    public double[,,] inputWeights;
+    private double[,] angleInputs;
 
 
 
@@ -26,6 +26,7 @@ public class Body_Control : MonoBehaviour
     }
 
     // Update is called once per frame
+    /*
     void Update()
     {
 
@@ -35,7 +36,7 @@ public class Body_Control : MonoBehaviour
             //get angle input for that leg
             for (int j = 0; j < AngleInputs; j++)
             {
-                angleInputs[i][j] = 0;
+                angleInputs[i,j] = 0;
             }
 
                 //for each neuron in that set
@@ -52,7 +53,7 @@ public class Body_Control : MonoBehaviour
                     //prevents self connections
                     if (j != k)
                     {
-                        weightedSum += neuronStates[i][j] * intraNeuronWeights[i][j][k];
+                        weightedSum += neuronStates[i,j] * intraNeuronWeights[i,j,k];
                     }
                 }
 
@@ -62,28 +63,28 @@ public class Body_Control : MonoBehaviour
                     //prevents self connections
                     if (j != k)
                     {
-                        weightedSum += neuronStates[k][j] * exoNeuronWeights[k][j];
+                        weightedSum += neuronStates[k,j] * exoNeuronWeights[k,j];
                     }
                 }
 
                 //Input connections
                 for (int k = 0; k < AngleInputs; k++)
                 {
-                weightedSum += angleInputs[j][k] * inputWeights[i][k][j];
+                weightedSum += angleInputs[j,k] * inputWeights[i,k,j];
                 
                 }
 
 
                 // Apply binary step function
-                //neuronStates[i][j] = weightedSum >= Threshold ? 1 : 0;
+                //neuronStates[i,j] = weightedSum >= Threshold ? 1 : 0;
 
                 // Apply tanh activation function
                 //this is more closer to what the literature uses.
-                neuronStates[i][j] = Math.Tanh(weightedSum);
+                neuronStates[i,j] = Math.Tanh(weightedSum);
             }
         }
     }
-
+    */
     public void setJointTargets(double targetJoints)
     {
         for (int i = 0; i<NumberOfSets; i++)
