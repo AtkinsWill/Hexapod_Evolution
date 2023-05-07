@@ -11,9 +11,9 @@ public class Simulation_Control : MonoBehaviour
     int num_neuron_per_set = 5;
 
 
-    private double[,,] intraNeuronWeights;
-    private double[,] exoNeuronWeights;
-    private double[,,] inputWeights;
+    private double[,,] tempIntraNeuronWeights;
+    private double[,] tempExoNeuronWeights;
+    private double[,,] tempInputWeights;
 
     public GameObject[] hexapodControllers;
     public GameObject hexapodControllerPrefab;
@@ -21,8 +21,8 @@ public class Simulation_Control : MonoBehaviour
     public GameObject[] hexapods;
     public GameObject hexapodPrefab;
 
-    public GameObject[] objectives;
-    public GameObject objectivePrefab;
+    public GameObject[] goals;
+    public GameObject goalPrefab;
 
 
     public float simulationTime;
@@ -33,9 +33,9 @@ public class Simulation_Control : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        intraNeuronWeights = new double[num_sets, num_neuron_per_set, num_neuron_per_set];
-        inputWeights = new double[num_sets, num_neuron_per_set, num_neuron_per_set];
-        exoNeuronWeights = new double[5, num_neuron_per_set];
+        tempIntraNeuronWeights = new double[num_sets, num_neuron_per_set, num_neuron_per_set];
+        tempInputWeights = new double[num_sets, num_neuron_per_set, num_neuron_per_set];
+        tempExoNeuronWeights = new double[num_sets, num_neuron_per_set];
 
         hexapodControllers = new GameObject[numHexapods];
         hexapods = new GameObject[numHexapods];
@@ -44,8 +44,9 @@ public class Simulation_Control : MonoBehaviour
             GameObject hexapodController = Instantiate(hexapodControllerPrefab, new Vector3(0, 15, (float)i * 15), Quaternion.identity) as GameObject;
             hexapodControllers[i] = hexapodController;
             Hexapod_Control hexapod_control = hexapodController.GetComponent<Hexapod_Control>();
-            GameObject newObjective = Instantiate(objectivePrefab, new Vector3(20, 3, (float)i * 15), Quaternion.identity) as GameObject;
-            hexapod_control.objective = newObjective;
+            GameObject newGoal = Instantiate(goalPrefab, new Vector3(20, 3, (float)i * 15), Quaternion.identity) as GameObject;
+            hexapod_control.goal = newGoal;
+            print(hexapodControllers[i].GetInstanceID());
         }
 
         InitaliseRandomWeights();
@@ -81,18 +82,19 @@ public class Simulation_Control : MonoBehaviour
     {
         int counter = 0;
         //initialise random weights with seed.
-        Random.InitState(seed);
 
+        Random.InitState(seed);
         for (int i = 0; i < numHexapods; i++)
         {
+            
             for (int j = 0; j < num_sets; j++)
             {
                 for (int k = 0; k < num_neuron_per_set; k++)
                 {
                     for (int l = 0; l < num_neuron_per_set; l++)
                     {
-                        intraNeuronWeights[j, k, l] = Random.Range(-1f, 1f);
-                        inputWeights[j, k, l] = Random.Range(-1f, 1f);
+                        tempIntraNeuronWeights[j, k, l] = Random.Range(-1f, 1f);
+                        tempInputWeights[j, k, l] = Random.Range(-1f, 1f);
                     }
 
                 }
@@ -101,43 +103,46 @@ public class Simulation_Control : MonoBehaviour
             {
                 for (int k = 0; k < num_neuron_per_set; k++)
                 {
-                    exoNeuronWeights[j, k] = Random.Range(-1f, 1f);
+                    tempExoNeuronWeights[j, k] = Random.Range(-1f, 1f);
                 }
             }
-
-            setControllerWeights(i, intraNeuronWeights, exoNeuronWeights, inputWeights);
+           
+            setControllerWeights(i, tempIntraNeuronWeights, tempExoNeuronWeights, tempInputWeights);
 
         }
     }
 
     void setControllerWeights(int controllerID, double[,,] intraNW, double[,] exoNW, double[,,] inputW)
     {
+        
         GameObject hexapodController = hexapodControllers[controllerID];
         Hexapod_Control hexapod_control = hexapodController.GetComponent<Hexapod_Control>();
-        hexapod_control.intraNeuronWeights = intraNeuronWeights;
-        hexapod_control.inputWeights = inputWeights;
-        hexapod_control.exoNeuronWeights = exoNeuronWeights;
+        Debug.Log(controllerID);
+        Debug.Log(intraNW[2, 2, 2]);
+        hexapod_control.setIntraNeuronWeights(intraNW);
+        hexapod_control.setInputWeights(inputW);
+        hexapod_control.setExoNeuronWeights(exoNW);
     }
 
     double[,,] getControllerIntraNeuronWeights(int controllerID)
     {
         GameObject hexapodController = hexapodControllers[controllerID];
         Hexapod_Control hexapod_control = hexapodController.GetComponent<Hexapod_Control>();
-        return hexapod_control.intraNeuronWeights;
+        return hexapod_control.getIntraNeuronWeights();
     }
 
     double[,] getControllerExoNeuronWeights(int controllerID)
     {
         GameObject hexapodController = hexapodControllers[controllerID];
         Hexapod_Control hexapod_control = hexapodController.GetComponent<Hexapod_Control>();
-        return hexapod_control.exoNeuronWeights;
+        return hexapod_control.getExoNeuronWeights();
     }
 
     double[,,] getControllerInputWeights(int controllerID)
     {
         GameObject hexapodController = hexapodControllers[controllerID];
         Hexapod_Control hexapod_control = hexapodController.GetComponent<Hexapod_Control>();
-        return hexapod_control.inputWeights;
+        return hexapod_control.getInputWeights();
     }
     //===========================================================================================
 
@@ -189,8 +194,8 @@ public class Simulation_Control : MonoBehaviour
         for (int i = 0; i < numHexapods; i++)
         {
             double[,,] tempWeights = getControllerInputWeights(i);
-            Debug.Log(i);
-            Debug.Log(tempWeights[i, 0, 0]);
+           //Debug.Log(i);
+           //Debug.Log(tempWeights[i, 0, 0]);
             for (int j = 0; j < 3; j++)
             {
                 for (int k = 0; k < num_neuron_per_set; k++)
@@ -199,12 +204,8 @@ public class Simulation_Control : MonoBehaviour
                 }
                 
             }
-            if (i == 0)
-            {
-                Debug.Log("This one: ");
-                Debug.Log(tempWeights[0, 0, 0]);
-            }
-            setControllerWeights(i, intraNeuronWeights, exoNeuronWeights, tempWeights);
+           
+            setControllerWeights(i, tempIntraNeuronWeights, tempExoNeuronWeights, tempWeights);
             
 
             //weights[i] = Random.Range(1f, 10);

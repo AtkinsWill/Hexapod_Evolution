@@ -272,8 +272,8 @@ MonoBehaviour:
   hexapodControllerPrefab: {fileID: 8668080398919921644, guid: 5bbfe1454f03b83459fd50cd1123da46, type: 3}
   hexapods: []
   hexapodPrefab: {fileID: 5117387118566094288, guid: 07912db482e8b6d4f93addf183b83d3d, type: 3}
-  objectives: []
-  objectivePrefab: {fileID: 669375161922275771, guid: a505ca878a764bc48bce35528aab6a4b, type: 3}
+  goals: []
+  goalPrefab: {fileID: 669375161922275771, guid: a505ca878a764bc48bce35528aab6a4b, type: 3}
   simulationTime: 6.45
   currentTime: 0
 --- !u!4 &702958089
