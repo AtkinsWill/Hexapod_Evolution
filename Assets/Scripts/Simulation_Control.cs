@@ -33,6 +33,7 @@ public class Simulation_Control : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        Random.InitState(seed);
         tempIntraNeuronWeights = new double[num_sets, num_neuron_per_set, num_neuron_per_set];
         tempInputWeights = new double[num_sets, num_neuron_per_set, num_neuron_per_set];
         tempExoNeuronWeights = new double[num_sets, num_neuron_per_set];
@@ -46,6 +47,7 @@ public class Simulation_Control : MonoBehaviour
             Hexapod_Control hexapod_control = hexapodController.GetComponent<Hexapod_Control>();
             GameObject newGoal = Instantiate(goalPrefab, new Vector3(20, 3, (float)i * 15), Quaternion.identity) as GameObject;
             hexapod_control.goal = newGoal;
+            print("Hexapod ID of bot " + i); 
             print(hexapodControllers[i].GetInstanceID());
         }
 
@@ -78,50 +80,48 @@ public class Simulation_Control : MonoBehaviour
     // created at the start of the simulation and are updated between iterations.
     // They are never deleted.
     // Each one stores the weights for one hexapod for each iteration.
-    void InitaliseRandomWeights()
+void InitaliseRandomWeights()
+{
+    for (int i = 0; i < numHexapods; i++)
     {
-        int counter = 0;
-        //initialise random weights with seed.
+        double[,,] tempIntraNeuronWeights = new double[num_sets, num_neuron_per_set, num_neuron_per_set];
+        double[,,] tempInputWeights = new double[num_sets, num_neuron_per_set, num_neuron_per_set];
+        double[,] tempExoNeuronWeights = new double[num_sets, num_neuron_per_set];
 
-        Random.InitState(seed);
-        for (int i = 0; i < numHexapods; i++)
+        for (int j = 0; j < num_sets; j++)
         {
-            
-            for (int j = 0; j < num_sets; j++)
+            for (int k = 0; k < num_neuron_per_set; k++)
             {
-                for (int k = 0; k < num_neuron_per_set; k++)
+                for (int l = 0; l < num_neuron_per_set; l++)
                 {
-                    for (int l = 0; l < num_neuron_per_set; l++)
-                    {
-                        tempIntraNeuronWeights[j, k, l] = Random.Range(-1f, 1f);
-                        tempInputWeights[j, k, l] = Random.Range(-1f, 1f);
-                    }
-
+                    tempIntraNeuronWeights[j, k, l] = Random.Range(-1f, 1f);
+                    tempInputWeights[j, k, l] = Random.Range(-1f, 1f);
                 }
             }
-            for (int j = 0; j < 3; j++)
-            {
-                for (int k = 0; k < num_neuron_per_set; k++)
-                {
-                    tempExoNeuronWeights[j, k] = Random.Range(-1f, 1f);
-                }
-            }
-           
-            setControllerWeights(i, tempIntraNeuronWeights, tempExoNeuronWeights, tempInputWeights);
-
         }
+        for (int j = 0; j < 3; j++)
+        {
+            for (int k = 0; k < num_neuron_per_set; k++)
+            {
+                tempExoNeuronWeights[j, k] = Random.Range(-1f, 1f);
+            }
+        }
+        setControllerWeights(i, tempIntraNeuronWeights, tempExoNeuronWeights, tempInputWeights);
     }
+}
 
     void setControllerWeights(int controllerID, double[,,] intraNW, double[,] exoNW, double[,,] inputW)
     {
         
         GameObject hexapodController = hexapodControllers[controllerID];
         Hexapod_Control hexapod_control = hexapodController.GetComponent<Hexapod_Control>();
+        Debug.Log("Setcontrollerweight controller ID");
         Debug.Log(controllerID);
         Debug.Log(intraNW[2, 2, 2]);
         hexapod_control.setIntraNeuronWeights(intraNW);
         hexapod_control.setInputWeights(inputW);
         hexapod_control.setExoNeuronWeights(exoNW);
+        hexapod_control.getIntraNeuronWeights();
     }
 
     double[,,] getControllerIntraNeuronWeights(int controllerID)

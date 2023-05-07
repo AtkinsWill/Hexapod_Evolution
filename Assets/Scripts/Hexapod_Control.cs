@@ -13,9 +13,9 @@ public class Hexapod_Control : MonoBehaviour
     private const int NeuronsPerSet = 5;
     private const int AngleInputs = 3;
     //private const int Threshold = 0;
-    private double[,] neuronStates = new double[6, 5] { { 0.0f, 0.0f, 0.0f, 0.0f, 0.0f }, { 0.0f, 0.0f, 0.0f, 0.0f, 0.0f }, { 0.0f, 0.0f, 0.0f, 0.0f, 0.0f }, 
+    private double[,] neuronStates = new double[6, 5] { { 0.0f, 0.0f, 0.0f, 0.0f, 0.0f }, { 0.0f, 0.0f, 0.0f, 0.0f, 0.0f }, { 0.0f, 0.0f, 0.0f, 0.0f, 0.0f },
                                                         { 0.0f, 0.0f, 0.0f, 0.0f, 0.0f }, { 0.0f, 0.0f, 0.0f, 0.0f, 0.0f }, { 0.0f, 0.0f, 0.0f, 0.0f, 0.0f } };
-    public float[,] normalisedJointPositions = new float[6, 3] {   { 0.0f, 0.0f, 0.0f }, { 0.0f, 0.0f, 0.0f }, { 0.0f, 0.0f, 0.0f }, 
+    public float[,] normalisedJointPositions = new float[6, 3] {   { 0.0f, 0.0f, 0.0f }, { 0.0f, 0.0f, 0.0f }, { 0.0f, 0.0f, 0.0f },
                                                                 { 0.0f, 0.0f, 0.0f }, { 0.0f, 0.0f, 0.0f }, { 0.0f, 0.0f, 0.0f } };
     //public float[,] feelers = new float[6, 2] { { 0.0f, 0.0f }, { 0.0f, 0.0f }, { 0.0f, 0.0f },
     //                                           { 0.0f, 0.0f }, { 0.0f, 0.0f }, { 0.0f, 0.0f } };
@@ -29,12 +29,12 @@ public class Hexapod_Control : MonoBehaviour
     public float normalisedDistanceToGoal;
     public float normalisedAngleToGoal;
 
-    private float maximumJointAngle = Mathf.PI/4;
+    private float maximumJointAngle = Mathf.PI / 4;
 
     // Start is called before the first frame update
     void Start()
     {
-        
+
 
     }
     /*
@@ -60,7 +60,112 @@ public class Hexapod_Control : MonoBehaviour
     }
     */
     // Update is called once per frame
-    
+
+
+
+    public float getNormalisedAngleToGoal()
+    {
+        Vector3 vector3ToGoal = goal.transform.position - hexapod.transform.position;
+        Vector2 vector2ToGoal = new Vector2(vector3ToGoal.x, vector3ToGoal.z);
+        float rot = hexapod.transform.rotation.y;
+        Vector2 facing = new Vector2(Mathf.Cos(rot * Mathf.Deg2Rad), Mathf.Sin(rot * Mathf.Deg2Rad));
+
+        float angleToGoal = Vector2.SignedAngle(vector2ToGoal, facing);
+
+        float normalisedAngle = angleToGoal / 180;
+
+        return normalisedAngle;
+    }
+
+
+    public float getNoramlisedDistanceToGoal()
+    {
+        Vector3 vector3ToGoal = goal.transform.position - hexapod.transform.position;
+
+        float distanceToGoal = Mathf.Sqrt((vector3ToGoal.x * vector3ToGoal.x) + (vector3ToGoal.z * vector3ToGoal.z));
+
+        float normalisedDistance = distanceToGoal / 25;
+        if (normalisedDistance > 1)
+        {
+            normalisedDistance = 1;
+        }
+        if (normalisedDistance < -1)
+        {
+            normalisedDistance = -1;
+        }
+
+        return normalisedDistance;
+    }
+
+    public float[,] getNormalisedJointPositions()
+    {
+        float[,] jointAngles = hexapod.GetComponent<Body_Control>().currentJointTargets;
+        float[,] normalisedJointAngles = new float[6, 3]{   { 0.0f, 0.0f, 0.0f }, { 0.0f, 0.0f, 0.0f }, { 0.0f, 0.0f, 0.0f },
+                                                           { 0.0f, 0.0f, 0.0f }, { 0.0f, 0.0f, 0.0f }, { 0.0f, 0.0f, 0.0f } };
+        for (int i = 0; i < 6; i++)
+        {
+            for (int j = 0; j < 3; j++)
+            {
+                normalisedJointAngles[i, j] = jointAngles[i, j] / maximumJointAngle;
+
+            }
+        }
+
+        return normalisedJointAngles;
+    }
+
+    public void setJointTargets()
+    {
+        body_control = hexapod.GetComponent<Body_Control>();
+        for (int i = 0; i < 6; i++)
+        {
+            int k = 0;
+            for (int j = 0; j < 3; j++)
+            {
+                body_control.currentJointTargets[i, j] = (float)neuronStates[i, k] * maximumJointAngle;
+                //Debug.Log("Joint angle");
+
+                // Debug.Log(neuronStates[i, k]);
+                // Debug.Log(maximumJointAngle);
+                // Debug.Log(body_control.currentJointTargets[i, j]);
+                k += 2;
+            }
+        }
+
+    }
+
+
+    public void setIntraNeuronWeights(double[,,] intraNW)
+    {
+        Debug.Log(gameObject.GetInstanceID());
+        Debug.Log(intraNW[2, 2, 2]);
+        intraNeuronWeights = intraNW;
+    }
+    public void setExoNeuronWeights(double[,] exoNW)
+    {
+        exoNeuronWeights = exoNW;
+    }
+    public void setInputWeights(double[,,] intputW)
+    {
+        inputWeights = intputW;
+    }
+    public double[,,] getIntraNeuronWeights()
+    {
+        Debug.Log(gameObject.GetInstanceID());
+        Debug.Log(intraNeuronWeights[2, 2, 2]);
+        return intraNeuronWeights;
+    }
+    public double[,] getExoNeuronWeights()
+    {
+        return exoNeuronWeights;
+    }
+    public double[,,] getInputWeights()
+    {
+        return inputWeights;
+    }
+
+
+
     void Update()
     {
         Debug.Log("This is in hexapod control update");
@@ -118,110 +223,10 @@ public class Hexapod_Control : MonoBehaviour
                 // Apply tanh activation function
                 //this is more closer to what the literature uses.
                 neuronStates[i, j] = System.Math.Tanh(weightedSum);
-               // Debug.Log(string.Format("{0} {1}", i, j));
-               // Debug.Log(neuronStates[i, j]);
+                // Debug.Log(string.Format("{0} {1}", i, j));
+                // Debug.Log(neuronStates[i, j]);
             }
         }
         setJointTargets();
     }
-
-    public float getNormalisedAngleToGoal()
-    {
-        Vector3 vector3ToGoal = goal.transform.position - hexapod.transform.position;
-        Vector2 vector2ToGoal = new Vector2(vector3ToGoal.x, vector3ToGoal.z);
-        float rot = hexapod.transform.rotation.y;
-        Vector2 facing = new Vector2(Mathf.Cos(rot * Mathf.Deg2Rad), Mathf.Sin(rot * Mathf.Deg2Rad));
-
-        float angleToGoal = Vector2.SignedAngle(vector2ToGoal, facing);
-
-        float normalisedAngle = angleToGoal / 180;
-
-        return normalisedAngle;
-    }
-
-
-    public float getNoramlisedDistanceToGoal()
-    {
-        Vector3 vector3ToGoal = goal.transform.position - hexapod.transform.position;
-
-        float distanceToGoal = Mathf.Sqrt((vector3ToGoal.x * vector3ToGoal.x) + (vector3ToGoal.z * vector3ToGoal.z));
-
-        float normalisedDistance = distanceToGoal / 25;
-        if (normalisedDistance > 1)
-        {
-            normalisedDistance = 1;
-        }
-        if (normalisedDistance < -1)
-        {
-            normalisedDistance = -1;
-        }
-
-        return normalisedDistance;
-    }
-
-    public float[,] getNormalisedJointPositions()
-    {
-        float[,] jointAngles = hexapod.GetComponent<Body_Control>().currentJointTargets;
-        float[,] normalisedJointAngles = new float[6,3]{   { 0.0f, 0.0f, 0.0f }, { 0.0f, 0.0f, 0.0f }, { 0.0f, 0.0f, 0.0f },
-                                                           { 0.0f, 0.0f, 0.0f }, { 0.0f, 0.0f, 0.0f }, { 0.0f, 0.0f, 0.0f } };
-        for (int i = 0; i < 6; i++)
-        {
-            for (int j = 0; j < 3; j++)
-            {
-                normalisedJointAngles[i, j] = jointAngles[i, j] / maximumJointAngle;
-
-            }
-        }
-
-        return normalisedJointAngles;
-    }
-
-    public void setJointTargets()
-    {
-        body_control = hexapod.GetComponent<Body_Control>();
-        for (int i = 0; i < 6; i++)
-        {
-            int k = 0;
-            for (int j = 0; j < 3; j++)
-            {
-                body_control.currentJointTargets[i, j] = (float)neuronStates[i, k] * maximumJointAngle;
-                //Debug.Log("Joint angle");
-                
-               // Debug.Log(neuronStates[i, k]);
-               // Debug.Log(maximumJointAngle);
-               // Debug.Log(body_control.currentJointTargets[i, j]);
-                k += 2;
-            }
-        }
-
-    }
-
-
-    public void setIntraNeuronWeights(double[,,] intraNW) {
-        Debug.Log(gameObject.GetInstanceID());
-        Debug.Log(intraNW[2, 2, 2]);
-        intraNeuronWeights = intraNW;
-    }
-    public void setExoNeuronWeights(double[,] exoNW)
-    {
-        exoNeuronWeights = exoNW;
-    }
-    public void setInputWeights(double[,,] intputW)
-    {
-        inputWeights = intputW;
-    }
-    public double[,,] getIntraNeuronWeights()
-    {
-        return intraNeuronWeights;
-    }
-    public double[,] getExoNeuronWeights()
-    {
-        return exoNeuronWeights;
-    }
-    public double[,,] getInputWeights()
-    {
-        return inputWeights;
-    }
-
-
 }
