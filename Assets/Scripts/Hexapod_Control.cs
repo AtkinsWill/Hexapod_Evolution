@@ -13,14 +13,16 @@ public class Hexapod_Control : MonoBehaviour
     private const int NeuronsPerSet = 5;
     private const int AngleInputs = 3;
     //private const int Threshold = 0;
-    private double[,] neuronStates;
+    private double[,] neuronStates = new double[6, 3] { { 0.0f, 0.0f, 0.0f }, { 0.0f, 0.0f, 0.0f }, { 0.0f, 0.0f, 0.0f }, { 0.0f, 0.0f, 0.0f }, { 0.0f, 0.0f, 0.0f }, { 0.0f, 0.0f, 0.0f } };
     public double[,,] intraNeuronWeights;
     public double[,] exoNeuronWeights;
     public double[,,] inputWeights;
     public float[,] angleInputs;
 
     public bool runSim = false;
-    public float[,] actualJointTargets = new float[6, 3] { { 0.0f, 0.0f, 0.0f }, { 0.0f, 0.0f, 0.0f }, { 0.0f, 0.0f, 0.0f }, { 0.0f, 0.0f, 0.0f }, { 0.0f, 0.0f, 0.0f }, { 0.0f, 0.0f, 0.0f } };
+    public float[,] actualJointTargets = new float[6, 3] { { 0.0f, 0.0f, 0.0f}, { 0.0f, 0.0f, 0.0f }, { 0.0f, 0.0f, 0.0f }, { 0.0f, 0.0f, 0.0f }, { 0.0f, 0.0f, 0.0f }, { 0.0f, 0.0f, 0.0f } };
+    public float[,] feelers = new float[6, 2] { { 0.0f, 0.0f}, { 0.0f,0.0f }, { 0.0f, 0.0f }, { 0.0f, 0.0f }, { 0.0f, 0.0f }, { 0.0f, 0.0f } };
+
 
     public Vector3 distanceToObjective;
 
@@ -30,7 +32,7 @@ public class Hexapod_Control : MonoBehaviour
         
 
     }
-
+    /*
     private void Update()
     {
         if (runSim)
@@ -51,9 +53,9 @@ public class Hexapod_Control : MonoBehaviour
             Debug.Log(distanceToObjective);
         }
     }
-
+    */
     // Update is called once per frame
-    /*
+    
     void Update()
     {
 
@@ -61,10 +63,7 @@ public class Hexapod_Control : MonoBehaviour
         for (int i = 0; i < NumberOfSets; i++) 
         {
             //get angle input for that leg
-            for (int j = 0; j < AngleInputs; j++)
-            {
-                angleInputs[i,j] = 0;
-            }
+
 
                 //for each neuron in that set
                 for (int j = 0; j < NeuronsPerSet; j++)
@@ -95,30 +94,31 @@ public class Hexapod_Control : MonoBehaviour
                 }
 
                 //Input connections
-                for (int k = 0; k < AngleInputs; k++)
+                for (int k = 0; k < 5; k++)
                 {
-                weightedSum += angleInputs[j,k] * inputWeights[i,k,j];
-                
+                weightedSum += actualJointTargets[j, 0] * inputWeights[i, 0, j];
+                weightedSum += actualJointTargets[j, 1] * inputWeights[i, 1, j];
+                weightedSum += actualJointTargets[j, 2] * inputWeights[i, 2, j];
+                weightedSum += feelers[j, 0] * inputWeights[i, 3, j];
+                weightedSum += feelers[j, 1] * inputWeights[i, 4, j];
+
                 }
 
 
-                // Apply binary step function
-                //neuronStates[i,j] = weightedSum >= Threshold ? 1 : 0;
-
                 // Apply tanh activation function
                 //this is more closer to what the literature uses.
-                neuronStates[i,j] = Math.Tanh(weightedSum);
+                neuronStates[i,j] = System.Math.Tanh(weightedSum);
             }
         }
     }
-    */
+    
     public void setJointTargets(double targetJoints)
     {
         for (int i = 0; i < NumberOfSets; i++)
         {
             for (int j = 0; j < NeuronsPerSet; j += 2)
             {
-                //body_control.actualJointTargets[i, j] = (float)neuronStates[i][j];
+                body_control.actualJointTargets[i, j] = neuronStates[i][j];
             }
         }
 

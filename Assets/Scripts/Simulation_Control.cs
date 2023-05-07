@@ -35,7 +35,7 @@ public class Simulation_Control : MonoBehaviour
     {
         intraNeuronWeights = new double[num_sets, num_neuron_per_set, num_neuron_per_set];
         inputWeights = new double[num_sets, num_neuron_per_set, num_neuron_per_set];
-        exoNeuronWeights = new double[3, num_neuron_per_set];
+        exoNeuronWeights = new double[5, num_neuron_per_set];
 
         hexapodControllers = new GameObject[numHexapods];
         hexapods = new GameObject[numHexapods];
