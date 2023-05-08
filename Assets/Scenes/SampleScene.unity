@@ -266,15 +266,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cf4c3b900ce539f49925289c60e4c535, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  seed: 0
-  numHexapods: 100
+  seed: 12
+  numHexapods: 500
+  crossoverRate: 0.5
+  mutationRate: 0.2
+  mutationAmount: 0.2
   hexapodControllers: []
   hexapodControllerPrefab: {fileID: 8668080398919921644, guid: 5bbfe1454f03b83459fd50cd1123da46, type: 3}
   hexapods: []
   hexapodPrefab: {fileID: 5117387118566094288, guid: 07912db482e8b6d4f93addf183b83d3d, type: 3}
   goals: []
   goalPrefab: {fileID: 669375161922275771, guid: a505ca878a764bc48bce35528aab6a4b, type: 3}
-  simulationTime: 5
+  simulationTime: 10
   currentTime: 0
 --- !u!4 &702958089
 Transform:

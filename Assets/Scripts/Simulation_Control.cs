@@ -9,6 +9,10 @@ public class Simulation_Control : MonoBehaviour
     public int numHexapods = 1;
     int num_sets = 6;
     int num_neuron_per_set = 5;
+    public float crossoverRate = 0.4f;
+    public float mutationRate = 0.2f;
+    public float mutationAmount = 0.2f;
+    private int gencounter = 1;
 
 
     private double[,,] tempIntraNeuronWeights;
@@ -66,6 +70,10 @@ public class Simulation_Control : MonoBehaviour
         if (currentTime > simulationTime)
         {
             evaluate();
+            gencounter++;
+            print("-----------");
+            print("GENERATION: " + gencounter);
+            print("-----------");
         }
         else
         {
@@ -251,11 +259,11 @@ void InitaliseRandomWeights()
         {
             GameObject hexapodController = hexapodControllers[i];
             Hexapod_Control hexapod_control = hexapodController.GetComponent<Hexapod_Control>();
-            print(hexapod_control.getNormalisedDistanceToGoal());
+            //print(hexapod_control.getNormalisedDistanceToGoal());
             hexapodFitnesses[i] = hexapod_control.getNormalisedDistanceToGoal() + 1;
             totalFitness += hexapodFitnesses[i];
         }
-        print(totalFitness);
+        //print(totalFitness);
         print(Mathf.Max(hexapodFitnesses));
         print("-----------");
         destroyHexapods();
@@ -287,13 +295,7 @@ void InitaliseRandomWeights()
 
         for (int i = 0; i < numHexapods; i++)
         {
-            //print(i);
-           // print(rouletteWheel.Count);
-           // int randomVal = Random.Range(0, rouletteWheel.Count);
-           // int randomVal2 = Random.Range(0, rouletteWheel.Count-1);
 
-           // print(randomVal);
-            //print(randomVal2);
             newControllers[i] = rouletteWheel[Random.Range(0, rouletteWheel.Count - 1)];
             for (int j = 0; j < num_sets; j++)
             {
@@ -312,9 +314,106 @@ void InitaliseRandomWeights()
         }
 
         //======================= Crossover new weights with each other =============================
+        for (int i = 0; i < numHexapods; i += 2)
+        {
+            if (i + 1 < numHexapods)
+            {
+                // Crossover intra-neuron weights
+                for (int j = 0; j < num_sets; j++)
+                {
+                    for (int k = 0; k < num_neuron_per_set; k++)
+                    {
+                        if (Random.Range(0f, 1f) < crossoverRate)
+                        {
+                            for (int l = 0; l < num_neuron_per_set; l++)
+                            {
+                                double tempWeight = newAllIntraNW[i, j, k, l];
+                                newAllIntraNW[i, j, k, l] = newAllIntraNW[i + 1, j, k, l];
+                                newAllIntraNW[i + 1, j, k, l] = tempWeight;
+                            }
+                        }
+                    }
+                }
+
+                // Crossover input weights
+                for (int j = 0; j < num_sets; j++)
+                {
+                    for (int k = 0; k < num_neuron_per_set; k++)
+                    {
+                        if (Random.Range(0f, 1f) < crossoverRate)
+                        {
+                            for (int l = 0; l < num_neuron_per_set; l++)
+                            {
+                                double tempWeight = newAllInputW[i, j, k, l];
+                                newAllInputW[i, j, k, l] = newAllInputW[i + 1, j, k, l];
+                                newAllInputW[i + 1, j, k, l] = tempWeight;
+                            }
+                        }
+                    }
+                }
+
+                // Crossover exo-neuron weights
+                for (int j = 0; j < num_sets; j++)
+                {
+                    for (int k = 0; k < num_neuron_per_set; k++)
+                    {
+                        if (Random.Range(0f, 1f) < crossoverRate)
+                        {
+                            double tempWeight = newAllExoNW[i, j, k];
+                            newAllExoNW[i, j, k] = newAllExoNW[i + 1, j, k];
+                            newAllExoNW[i + 1, j, k] = tempWeight;
+                        }
+                    }
+                }
+            }
+        }
 
 
         //======================= Mutate some of the new weights =============================
+        for (int i = 0; i < numHexapods; i++)
+        {
+            // Mutate intra-neuron weights
+            for (int j = 0; j < num_sets; j++)
+            {
+                for (int k = 0; k < num_neuron_per_set; k++)
+                {
+                    for (int l = 0; l < num_neuron_per_set; l++)
+                    {
+                        if (Random.Range(0f, 1f) < mutationRate)
+                        {
+                            newAllIntraNW[i, j, k, l] += Random.Range(-mutationAmount, mutationAmount);
+                        }
+                    }
+                }
+            }
+
+            // Mutate input weights
+            for (int j = 0; j < num_sets; j++)
+            {
+                for (int k = 0; k < num_neuron_per_set; k++)
+                {
+                    for (int l = 0; l < num_neuron_per_set; l++)
+                    {
+                        if (Random.Range(0f, 1f) < mutationRate)
+                        {
+                            newAllInputW[i, j, k, l] += Random.Range(-mutationAmount, mutationAmount);
+                        }
+                    }
+                }
+            }
+
+            // Mutate exo-neuron weights
+            for (int j = 0; j < num_sets; j++)
+            {
+                for (int k = 0; k < num_neuron_per_set; k++)
+                {
+                    if (Random.Range(0f, 1f) < mutationRate)
+                    {
+                        newAllExoNW[i, j, k] += Random.Range(-mutationAmount, mutationAmount);
+                    }
+                }
+            }
+        }
 
 
 
@@ -343,8 +442,4 @@ void InitaliseRandomWeights()
         spawnHexapods();
 
     }
-
-    
-
-
 }
