@@ -190,21 +190,30 @@ void InitaliseRandomWeights()
 
     void evaluate()
     {
-        destroyHexapods();
+        //destroyHexapods();
         for (int i = 0; i < numHexapods; i++)
         {
+            //output old weights to CSV
             double[,,] tempWeights = getControllerInputWeights(i);
-           //Debug.Log(i);
-           //Debug.Log(tempWeights[i, 0, 0]);
-            for (int j = 0; j < 3; j++)
-            {
-                for (int k = 0; k < num_neuron_per_set; k++)
-                {
-                    tempWeights[i, j, k] += 0.1f;
-                }
-                
-            }
-           
+
+            //get fitnesses
+                //do this with a loop for i (each hexapod)
+                //calc fitnesse
+                //store all fitnesses to array with controller ID (fitness array)
+                //output that CSV
+            
+            //destroy hexapod
+
+            //LEAVE I BASED FOR LOOP
+
+            //with the fitness array do roulette (spin num hexapod times, prob based on percentage of ind. fitness based on total fit)
+            //crossover (look into standards) (if nothing found just next in line)
+            
+            //loop through selected controllers
+            //mutate
+            //setcontroller
+
+            
             setControllerWeights(i, tempIntraNeuronWeights, tempExoNeuronWeights, tempWeights);
             
 
