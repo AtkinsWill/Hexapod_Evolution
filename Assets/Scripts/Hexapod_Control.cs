@@ -78,13 +78,13 @@ public class Hexapod_Control : MonoBehaviour
     }
 
 
-    public float getNoramlisedDistanceToGoal()
+    public float getNormalisedDistanceToGoal()
     {
         Vector3 vector3ToGoal = goal.transform.position - hexapod.transform.position;
 
         float distanceToGoal = Mathf.Sqrt((vector3ToGoal.x * vector3ToGoal.x) + (vector3ToGoal.z * vector3ToGoal.z));
 
-        float normalisedDistance = distanceToGoal / 25;
+        float normalisedDistance = ((distanceToGoal / 15f) - 1f) * -1f;
         if (normalisedDistance > 1)
         {
             normalisedDistance = 1;
@@ -93,7 +93,7 @@ public class Hexapod_Control : MonoBehaviour
         {
             normalisedDistance = -1;
         }
-
+        //print(normalisedDistance);
         return normalisedDistance;
     }
 
@@ -137,8 +137,8 @@ public class Hexapod_Control : MonoBehaviour
 
     public void setIntraNeuronWeights(double[,,] intraNW)
     {
-        Debug.Log(gameObject.GetInstanceID());
-        Debug.Log(intraNW[2, 2, 2]);
+       // Debug.Log(gameObject.GetInstanceID());
+       // Debug.Log(intraNW[2, 2, 2]);
         intraNeuronWeights = intraNW;
     }
     public void setExoNeuronWeights(double[,] exoNW)
@@ -151,8 +151,8 @@ public class Hexapod_Control : MonoBehaviour
     }
     public double[,,] getIntraNeuronWeights()
     {
-        Debug.Log(gameObject.GetInstanceID());
-        Debug.Log(intraNeuronWeights[2, 2, 2]);
+       // Debug.Log(gameObject.GetInstanceID());
+      //  Debug.Log(intraNeuronWeights[2, 2, 2]);
         return intraNeuronWeights;
     }
     public double[,] getExoNeuronWeights()
@@ -168,12 +168,12 @@ public class Hexapod_Control : MonoBehaviour
 
     void Update()
     {
-        Debug.Log("This is in hexapod control update");
-        Debug.Log(gameObject.GetInstanceID());
-        Debug.Log(intraNeuronWeights[2, 2, 2]);
+     //   Debug.Log("This is in hexapod control update");
+     //   Debug.Log(gameObject.GetInstanceID());
+     //   Debug.Log(intraNeuronWeights[2, 2, 2]);
         normalisedJointPositions = getNormalisedJointPositions();
         //print(normalisedJointPositions[1, 1]);
-        normalisedDistanceToGoal = getNoramlisedDistanceToGoal();
+        normalisedDistanceToGoal = getNormalisedDistanceToGoal();
         normalisedAngleToGoal = getNormalisedAngleToGoal();
         //iterate through each set
         for (int i = 0; i < NumberOfSets; i++)
