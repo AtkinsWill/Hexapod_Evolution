@@ -267,14 +267,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   seed: 0
-  numHexapods: 6
+  numHexapods: 100
   hexapodControllers: []
   hexapodControllerPrefab: {fileID: 8668080398919921644, guid: 5bbfe1454f03b83459fd50cd1123da46, type: 3}
   hexapods: []
   hexapodPrefab: {fileID: 5117387118566094288, guid: 07912db482e8b6d4f93addf183b83d3d, type: 3}
   goals: []
   goalPrefab: {fileID: 669375161922275771, guid: a505ca878a764bc48bce35528aab6a4b, type: 3}
-  simulationTime: 6.45
+  simulationTime: 5
   currentTime: 0
 --- !u!4 &702958089
 Transform:
@@ -561,7 +561,7 @@ Transform:
   m_GameObject: {fileID: 1802760781}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 20, y: 20, z: 20}
+  m_LocalScale: {x: 2000, y: 2000, z: 2000}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
