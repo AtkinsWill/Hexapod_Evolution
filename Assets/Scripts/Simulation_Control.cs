@@ -9,9 +9,6 @@ public class Simulation_Control : MonoBehaviour
     public int seed = 0;
     public int numHexapods = 1;
     int num_sets = 6;
-<<<<<<< Updated upstream
-    int num_neuron_per_set = 5;
-=======
     int num_neuron_per_set = 9;
     public float crossoverRate = 0.4f;
     public float mutationRate = 1f;
@@ -26,23 +23,39 @@ public class Simulation_Control : MonoBehaviour
     public GameObject[] hexapodControllers;
     public GameObject hexapodControllerPrefab;
 
->>>>>>> Stashed changes
     public GameObject[] hexapods;
     public GameObject hexapodPrefab;
-    float angle;
+
+    public GameObject[] goals;
+    public GameObject goalPrefab;
+
+
     public float simulationTime;
     public float currentTime;
-    private double[,,,] intraNeuronWeights;
-    private double[,,] exoNeuronWeights;
-    private double[,,,] inputWeights;
+
 
 
     // Start is called before the first frame update
     void Start()
     {
-        intraNeuronWeights = new double[numHexapods, num_sets, num_neuron_per_set, num_neuron_per_set];
-        inputWeights = new double[numHexapods, num_sets, num_neuron_per_set, num_neuron_per_set];
-        exoNeuronWeights = new double[numHexapods, 3, num_neuron_per_set];
+        Random.InitState(seed);
+        tempIntraNeuronWeights = new double[num_sets, num_neuron_per_set, num_neuron_per_set];
+        tempInputWeights = new double[num_sets, num_neuron_per_set, num_neuron_per_set];
+        tempExoNeuronWeights = new double[num_sets, num_neuron_per_set];
+
+        hexapodControllers = new GameObject[numHexapods];
+        hexapods = new GameObject[numHexapods];
+        for (int i = 0; i < numHexapods; i++)
+        {
+            GameObject hexapodController = Instantiate(hexapodControllerPrefab, new Vector3(0, 15, (float)i * 15), Quaternion.identity) as GameObject;
+            hexapodControllers[i] = hexapodController;
+            Hexapod_Control hexapod_control = hexapodController.GetComponent<Hexapod_Control>();
+            GameObject newGoal = Instantiate(goalPrefab, new Vector3(20, 3, (float)i * 15), Quaternion.identity) as GameObject;
+            hexapod_control.goal = newGoal;
+           // print("Hexapod ID of bot " + i); 
+            //print(hexapodControllers[i].GetInstanceID());
+        }
+
         InitaliseRandomWeights();
         spawnHexapods();
     }
@@ -52,17 +65,16 @@ public class Simulation_Control : MonoBehaviour
     void FixedUpdate()
     {
         currentTime += Time.deltaTime;
+        
+
 
         if (currentTime > simulationTime)
         {
             evaluate();
-<<<<<<< Updated upstream
-=======
             gencounter++;
             //print("-----------");
             //print("GENERATION: " + gencounter);
             //print("-----------");
->>>>>>> Stashed changes
         }
         else
         {
@@ -72,17 +84,6 @@ public class Simulation_Control : MonoBehaviour
 
     }
 
-<<<<<<< Updated upstream
-    void runIteration()
-    {
-        angle += 0.0001f;
-        int i = 0;
-        foreach (GameObject hexapod in hexapods)
-        {
-            //hexapod.GetComponent<Body_Control>().setJointTargets(angle * weights[i]);
-            i++;
-        }
-=======
     // ===========================================================================================
     // Functions to set up and utilise the persistent hexapod controllers. These controllers are 
     // created at the start of the simulation and are updated between iterations.
@@ -130,36 +131,97 @@ void InitaliseRandomWeights()
         hexapod_control.setExoNeuronWeights(exoNW);
         
 
->>>>>>> Stashed changes
     }
 
-    void evaluate()
+    public double[,,,] getControllerIntraNeuronWeights()
     {
-        destroyHexapods();
+        double[,,,] tempIntraNeuronWeights = new double[numHexapods, num_sets, num_neuron_per_set, num_neuron_per_set];
+
         for (int i = 0; i < numHexapods; i++)
         {
-            //Debug.Log(weights);
-            //weights[i] = Random.Range(1f, 10);
+            GameObject hexapodController = hexapodControllers[i];
+            Hexapod_Control hexapod_control = hexapodController.GetComponent<Hexapod_Control>();
+
+            for (int j = 0; j < num_sets; j++)
+            {
+                for (int k = 0; k < num_neuron_per_set; k++)
+                {
+                    for (int l = 0; l < num_neuron_per_set; l++)
+                    {
+                        tempIntraNeuronWeights[i, j, k, l] = hexapod_control.getIntraNeuronWeights()[j, k, l];
+                    }
+                }
+            }
         }
 
-        spawnHexapods();
+        return tempIntraNeuronWeights;
 
     }
 
+    public double[,,] getControllerExoNeuronWeights()
+    {
+        double[,,] tempExoNeuronWeights = new double[numHexapods, num_sets, num_neuron_per_set];
+
+        for (int i = 0; i < numHexapods; i++)
+        {
+            GameObject hexapodController = hexapodControllers[i];
+            Hexapod_Control hexapod_control = hexapodController.GetComponent<Hexapod_Control>();
+
+            for (int j = 0; j < num_sets; j++)
+            {
+                for (int k = 0; k < num_neuron_per_set; k++)
+                {
+                    tempExoNeuronWeights[i, j, k] = hexapod_control.getExoNeuronWeights()[j, k];
+                }
+            }
+        }
+
+        return tempExoNeuronWeights;
+    }
+
+    public double[,,,] getControllerInputWeights()
+    {
+        double[,,,] tempInputWeights = new double[numHexapods, num_sets, num_neuron_per_set, num_neuron_per_set];
+
+        for (int i = 0; i < numHexapods; i++)
+        {
+            GameObject hexapodController = hexapodControllers[i];
+            Hexapod_Control hexapod_control = hexapodController.GetComponent<Hexapod_Control>();
+
+            for (int j = 0; j < num_sets; j++)
+            {
+                for (int k = 0; k < num_neuron_per_set; k++)
+                {
+                    for (int l = 0; l < num_neuron_per_set; l++)
+                    {
+                        tempInputWeights[i, j, k, l] = hexapod_control.getInputWeights()[j, k, l];
+                    }
+                }
+            }
+        }
+
+        return tempInputWeights;
+    }
+
+    //===========================================================================================
+
+    //-------------------------------------------------------------------------------------------
+    // Functions to set up and utilise the temporary hexapods, which are created and destroyed with
+    // each iteration.
     void spawnHexapods()
     {
         for (int i = 0; i < numHexapods; i++)
         {
             //preferable if in this loop weights get assigned to robots?
-            //Debug.Log(Random.Range(-1f, 1f));
-            GameObject hexapod = Instantiate(hexapodPrefab, new Vector3(0, 3, (float)i * 15), Quaternion.identity) as GameObject;
-            hexapods[i] = hexapod;
-            Body_Control body_control = hexapod.GetComponent<Body_Control>();
-            body_control.intraNeuronWeights[,,] = intraNeuronWeights[i,,];
-            body_control.exoNeuronWeights[,] = exoNeuronWeights[i,];
-            body_control.inputWeights[,,] = inputWeights[i,,];
+            GameObject newHexapod = Instantiate(hexapodPrefab, new Vector3(0, 3, (float)i * 15), Quaternion.identity) as GameObject;
+            hexapods[i] = newHexapod;
+
+            GameObject hexapodController = hexapodControllers[i];
+            Hexapod_Control hexapod_control = hexapodController.GetComponent<Hexapod_Control>();
+            hexapod_control.hexapod = newHexapod;
+
+
         }
-        angle = 0;
         currentTime = 0;
 
     }
@@ -171,40 +233,19 @@ void InitaliseRandomWeights()
             Destroy(hexapods[i]);
         }
     }
+    //-------------------------------------------------------------------------------------------
 
+    
 
-    void InitaliseRandomWeights()
+    void runIteration()
     {
-        int counter = 0;
-        //initialise random weights with seed.
-        Random.InitState(seed);
-        hexapods = new GameObject[numHexapods];
-        for (int i = 0; i < numHexapods; i++)
+        int i = 0;
+        foreach (GameObject hexapod in hexapods)
         {
-            for(int j = 0; j < num_sets; j++)
-            {
-                for(int k = 0; k < num_neuron_per_set; k++)
-                {
-                    for(int l = 0; l < num_neuron_per_set; l++)
-                    {
-                        intraNeuronWeights[i,j,k,l] = Random.Range(-1f, 1f);
-                        inputWeights[i,j,k,l] = Random.Range(-1f, 1f);
-                    }
-
-                }
-            }
-            for (int j = 0; j < 3; j++)
-            {
-                for (int k = 0; k < num_neuron_per_set; k++)
-                {
-                    exoNeuronWeights[i, j, k] = Random.Range(-1f, 1f);
-                }
-            }
+            //hexapod.GetComponent<Body_Control>().setJointTargets(angle * weights[i]);
+            i++;
         }
     }
-<<<<<<< Updated upstream
-}
-=======
 
     void evaluate()
     {
@@ -549,4 +590,3 @@ void InitaliseRandomWeights()
     }
 
 }
->>>>>>> Stashed changes
