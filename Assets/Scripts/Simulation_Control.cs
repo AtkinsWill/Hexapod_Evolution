@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -8,7 +9,7 @@ public class Simulation_Control : MonoBehaviour
     public int seed = 0;
     public int numHexapods = 1;
     int num_sets = 6;
-    int num_neuron_per_set = 5;
+    int num_neuron_per_set = 15;
     public float crossoverRate = 0.4f;
     public float mutationRate = 0.2f;
     public float mutationAmount = 0.2f;
@@ -46,10 +47,10 @@ public class Simulation_Control : MonoBehaviour
         hexapods = new GameObject[numHexapods];
         for (int i = 0; i < numHexapods; i++)
         {
-            GameObject hexapodController = Instantiate(hexapodControllerPrefab, new Vector3(0, 15, (float)i * 15), Quaternion.identity) as GameObject;
+            GameObject hexapodController = Instantiate(hexapodControllerPrefab, new Vector3(0, 15, (float)i * 25), Quaternion.identity) as GameObject;
             hexapodControllers[i] = hexapodController;
             Hexapod_Control hexapod_control = hexapodController.GetComponent<Hexapod_Control>();
-            GameObject newGoal = Instantiate(goalPrefab, new Vector3(20, 3, (float)i * 15), Quaternion.identity) as GameObject;
+            GameObject newGoal = Instantiate(goalPrefab, new Vector3(40, 3, (float)i * 25), Quaternion.identity) as GameObject;
             hexapod_control.goal = newGoal;
            // print("Hexapod ID of bot " + i); 
             //print(hexapodControllers[i].GetInstanceID());
@@ -90,6 +91,7 @@ public class Simulation_Control : MonoBehaviour
     // Each one stores the weights for one hexapod for each iteration.
 void InitaliseRandomWeights()
 {
+    System.Random random = new System.Random();
     for (int i = 0; i < numHexapods; i++)
     {
         double[,,] tempIntraNeuronWeights = new double[num_sets, num_neuron_per_set, num_neuron_per_set];
@@ -102,11 +104,14 @@ void InitaliseRandomWeights()
             {
                 for (int l = 0; l < num_neuron_per_set; l++)
                 {
+                    //tempIntraNeuronWeights[j, k, l] = random.NextDouble() * 2 - 1;
+                    //tempInputWeights[j, k, l] = random.NextDouble() * 2 - 1;
                     tempIntraNeuronWeights[j, k, l] = Random.Range(-1f, 1f);
                     tempInputWeights[j, k, l] = Random.Range(-1f, 1f);
                 }
                 tempExoNeuronWeights[j, k] = Random.Range(-1f, 1f);
-            }
+                //tempExoNeuronWeights[j, k] = random.NextDouble() * 2 - 1;
+                }
         }
         setControllerWeights(i, tempIntraNeuronWeights, tempExoNeuronWeights, tempInputWeights);
     }
@@ -124,6 +129,7 @@ void InitaliseRandomWeights()
         hexapod_control.setInputWeights(inputW);
         hexapod_control.setExoNeuronWeights(exoNW);
         hexapod_control.getIntraNeuronWeights();
+        hexapod_control.resetTime();
     }
 
     public double[,,,] getControllerIntraNeuronWeights()
@@ -206,7 +212,12 @@ void InitaliseRandomWeights()
         for (int i = 0; i < numHexapods; i++)
         {
             //preferable if in this loop weights get assigned to robots?
-            GameObject newHexapod = Instantiate(hexapodPrefab, new Vector3(0, 3, (float)i * 15), Quaternion.identity) as GameObject;
+            GameObject newHexapod = Instantiate(hexapodPrefab, new Vector3(0, 1.01f, (float)i * 25), Quaternion.identity) as GameObject;
+            newHexapod.GetComponent<ArticulationBody>().velocity = Vector3.zero;
+            newHexapod.GetComponent<ArticulationBody>().angularVelocity= Vector3.zero;
+            newHexapod.GetComponent<ArticulationBody>().immovable = true;
+
+
             hexapods[i] = newHexapod;
 
             GameObject hexapodController = hexapodControllers[i];
@@ -260,12 +271,12 @@ void InitaliseRandomWeights()
             GameObject hexapodController = hexapodControllers[i];
             Hexapod_Control hexapod_control = hexapodController.GetComponent<Hexapod_Control>();
             //print(hexapod_control.getNormalisedDistanceToGoal());
-            hexapodFitnesses[i] = hexapod_control.getNormalisedDistanceToGoal() + 1;
+            hexapodFitnesses[i] = (hexapod_control.getNormalisedDistanceToGoal());
             totalFitness += hexapodFitnesses[i];
         }
         //print(totalFitness);
         print(Mathf.Max(hexapodFitnesses));
-        print("-----------");
+        print(totalFitness / numHexapods);
         destroyHexapods();
 
         //======================= Build a roulette wheel =============================
@@ -295,8 +306,17 @@ void InitaliseRandomWeights()
 
         for (int i = 0; i < numHexapods; i++)
         {
-
-            newControllers[i] = rouletteWheel[Random.Range(0, rouletteWheel.Count - 1)];
+            //PrintWeightsCSV4D(newAllIntraNW, i, "CSVdataOutput/HexapodID" + i + "_step2_PreRoulette.csv");
+            print(rouletteWheel.Count);
+            if (rouletteWheel.Count < numHexapods/2)
+            {
+                newControllers[i] = Random.Range(0, numHexapods);
+            }
+            else
+            {
+                newControllers[i] = rouletteWheel[Random.Range(0, rouletteWheel.Count - 1)];
+            }
+            
             for (int j = 0; j < num_sets; j++)
             {
                 for (int k = 0; k < num_neuron_per_set; k++)
@@ -310,7 +330,8 @@ void InitaliseRandomWeights()
                     newAllExoNW[i, j, k] = tempAllExoNW[newControllers[i], j, k];
                 }
             }
-            
+            //PrintWeightsCSV4D(newAllIntraNW, i, "CSVdataOutput/HexapodID" + i + "_step3_PostRoulette.csv");
+
         }
 
         //======================= Crossover new weights with each other =============================
@@ -323,9 +344,11 @@ void InitaliseRandomWeights()
                 {
                     for (int k = 0; k < num_neuron_per_set; k++)
                     {
-                        if (Random.Range(0f, 1f) < crossoverRate)
+
+                        // print(string.Format("Crossing intra i:{0}, j:{1}, k{2} with i+1", i, j, k));
+                        for (int l = 0; l < num_neuron_per_set; l++)
                         {
-                            for (int l = 0; l < num_neuron_per_set; l++)
+                            if (Random.Range(0f, 1f) < crossoverRate)
                             {
                                 double tempWeight = newAllIntraNW[i, j, k, l];
                                 newAllIntraNW[i, j, k, l] = newAllIntraNW[i + 1, j, k, l];
@@ -340,9 +363,10 @@ void InitaliseRandomWeights()
                 {
                     for (int k = 0; k < num_neuron_per_set; k++)
                     {
-                        if (Random.Range(0f, 1f) < crossoverRate)
+                        // print(string.Format("Crossing input i:{0}, j:{1}, k{2} with i+1", i, j, k));
+                        for (int l = 0; l < num_neuron_per_set; l++)
                         {
-                            for (int l = 0; l < num_neuron_per_set; l++)
+                            if (Random.Range(0f, 1f) < crossoverRate)
                             {
                                 double tempWeight = newAllInputW[i, j, k, l];
                                 newAllInputW[i, j, k, l] = newAllInputW[i + 1, j, k, l];
@@ -359,6 +383,7 @@ void InitaliseRandomWeights()
                     {
                         if (Random.Range(0f, 1f) < crossoverRate)
                         {
+                           // print(string.Format("Crossing exo i:{0}, j:{1}, k{2} with i+1", i, j, k));
                             double tempWeight = newAllExoNW[i, j, k];
                             newAllExoNW[i, j, k] = newAllExoNW[i + 1, j, k];
                             newAllExoNW[i + 1, j, k] = tempWeight;
@@ -381,11 +406,14 @@ void InitaliseRandomWeights()
                     {
                         if (Random.Range(0f, 1f) < mutationRate)
                         {
+                           // print(string.Format("Mutating intra i:{0}, j:{1}, k{2}, l:{3} ", i, j, k, l));
+
                             newAllIntraNW[i, j, k, l] += Random.Range(-mutationAmount, mutationAmount);
                         }
                     }
                 }
             }
+            //PrintWeightsCSV4D(newAllIntraNW, i, "CSVdataOutput/HexapodID" + i + "_step5_PostMutation.csv");
 
             // Mutate input weights
             for (int j = 0; j < num_sets; j++)
@@ -396,6 +424,7 @@ void InitaliseRandomWeights()
                     {
                         if (Random.Range(0f, 1f) < mutationRate)
                         {
+                           // print(string.Format("Mutating input i:{0}, j:{1}, k{2}, l:{3}", i, j, k, l));
                             newAllInputW[i, j, k, l] += Random.Range(-mutationAmount, mutationAmount);
                         }
                     }
@@ -409,6 +438,8 @@ void InitaliseRandomWeights()
                 {
                     if (Random.Range(0f, 1f) < mutationRate)
                     {
+                      //  print(string.Format("Mutating exo  i:{0}, j:{1}, k{2}", i, j, k));
+
                         newAllExoNW[i, j, k] += Random.Range(-mutationAmount, mutationAmount);
                     }
                 }
@@ -442,4 +473,136 @@ void InitaliseRandomWeights()
         spawnHexapods();
 
     }
+
+    void PrintWeights(double[,,] weights)
+    {
+        int dim1 = weights.GetLength(0);
+        int dim2 = weights.GetLength(1);
+        int dim3 = weights.GetLength(2);
+
+        for (int i = 0; i < dim1; i++)
+        {
+            Debug.Log($"Set {i + 1}:");
+
+            for (int j = 0; j < dim2; j++)
+            {
+                string row = "Row " + (j + 1) + ": ";
+
+                for (int k = 0; k < dim3; k++)
+                {
+                    row += weights[i, j, k].ToString("F2") + " ";
+
+                    // Uncomment the line below to add a separator between values for easier reading
+                    // row += (k < dim3 - 1) ? ", " : "";
+                }
+
+                Debug.Log(row);
+            }
+
+            Debug.Log("");
+        }
+    }
+
+
+    void PrintWeightsCSV(double[,,] weights, string fileName)
+    {
+        int dim1 = weights.GetLength(0);
+        int dim2 = weights.GetLength(1);
+        int dim3 = weights.GetLength(2);
+
+        using (StreamWriter writer = new StreamWriter(fileName))
+        {
+            for (int i = 0; i < dim1; i++)
+            {
+                writer.WriteLine($"Set {i + 1}:");
+
+                for (int j = 0; j < dim2; j++)
+                {
+                    string row = "";
+
+                    for (int k = 0; k < dim3; k++)
+                    {
+                        row += weights[i, j, k].ToString("F2");
+
+                        // Add a comma separator between values, except for the last value in the row
+                        row += (k < dim3 - 1) ? "," : "";
+                    }
+
+                    writer.WriteLine(row);
+                }
+
+                writer.WriteLine("");
+            }
+        }
+    }
+
+    void PrintWeightsCSV4D(double[,,,] weights, int firstDimensionIndex, string fileName)
+    {
+        int dim2 = weights.GetLength(1);
+        int dim3 = weights.GetLength(2);
+        int dim4 = weights.GetLength(3);
+
+        using (StreamWriter writer = new StreamWriter(fileName))
+        {
+            for (int i = 0; i < dim2; i++)
+            {
+                writer.WriteLine($"Set {i + 1}:");
+
+                for (int j = 0; j < dim3; j++)
+                {
+                    string row = "";
+
+                    for (int k = 0; k < dim4; k++)
+                    {
+                        row += weights[firstDimensionIndex, i, j, k].ToString("F2");
+
+                        // Add a comma separator between values, except for the last value in the row
+                        row += (k < dim4 - 1) ? "," : "";
+                    }
+
+                    writer.WriteLine(row);
+                }
+
+                writer.WriteLine("");
+            }
+        }
+    }
+
+    void mutatetester()
+    {
+        double[,,] beforearray = new double[6, 6, 6];
+        for (int i = 0; i < 6; i++)
+        {
+            for (int j = 0; j < 6; j++)
+            {
+                for (int k = 0; k < 6; k++)
+                {
+
+                    beforearray[i, j, k] = 1.0;
+                }
+            }
+        }
+        double[,,] afterarray = beforearray;
+        PrintWeights(afterarray);
+        for (int i = 0; i < 6; i++)
+        {
+            for (int j = 0; j < 6; j++)
+            {
+                for (int k = 0; k < 6; k++)
+                {
+                    for (int l = 0; l < 6; l++)
+                    {
+                        if (Random.Range(0f, 1f) < mutationRate)
+                        {
+                            afterarray[i, j, k] += Random.Range(-mutationAmount, mutationAmount);
+                        }
+                    }
+                }
+
+            }
+        }
+        PrintWeights(afterarray);
+
+    }
+
 }

@@ -13,6 +13,7 @@ public class Body_Control : MonoBehaviour
     private int[] jointOrder = new int[18] { 21, 22, 29, 15, 16, 27, 12, 13, 26, 18, 19, 28, 6, 7, 24, 9, 10, 25 };
 
     public float maxAngleChangePerUpdate = 0.01f;
+    public float currentTime = 0;
 
     // Start is called before the first frame update
     void Start()
@@ -41,68 +42,72 @@ public class Body_Control : MonoBehaviour
 
         GetComponent<ArticulationBody>().SetDriveTargets(currentJointAngles);
         */
+        currentTime += Time.deltaTime;
 
-
-        for (int i = 0; i < 6; i++)
+        if (currentTime > 2f)
         {
-            for (int j = 0; j < 3; j++)
+            gameObject.GetComponent<ArticulationBody>().immovable = false;
+            for (int i = 0; i < 6; i++)
             {
-                float currentJointAngle = currentJointAngles[jointOrder[(i * 3) + j]];
-
-                if (currentJointAngle < currentJointTargets[i, j])
+                for (int j = 0; j < 3; j++)
                 {
-                    if (currentJointTargets[i, j] - currentJointAngle <= maxAngleChangePerUpdate)
-                    {
-                        currentJointAngle = currentJointTargets[i, j];
-                    }
-                    else
-                    {
-                        currentJointAngle += maxAngleChangePerUpdate;
-                    }
-                }
-                if (currentJointAngle > currentJointTargets[i, j])
-                {
-                    if (currentJointAngle - currentJointTargets[i, j] <= maxAngleChangePerUpdate)
-                    {
-                        currentJointAngle = currentJointTargets[i, j];
-                    }
-                    else
-                    {
-                        currentJointAngle -= maxAngleChangePerUpdate;
-                    }
-                }
-                currentJointAngles[jointOrder[(i * 3) + j]] = currentJointAngle;
+                    float currentJointAngle = currentJointAngles[jointOrder[(i * 3) + j]];
 
+                    if (currentJointAngle < currentJointTargets[i, j])
+                    {
+                        if (currentJointTargets[i, j] - currentJointAngle <= maxAngleChangePerUpdate)
+                        {
+                            currentJointAngle = currentJointTargets[i, j];
+                        }
+                        else
+                        {
+                            currentJointAngle += maxAngleChangePerUpdate;
+                        }
+                    }
+                    if (currentJointAngle > currentJointTargets[i, j])
+                    {
+                        if (currentJointAngle - currentJointTargets[i, j] <= maxAngleChangePerUpdate)
+                        {
+                            currentJointAngle = currentJointTargets[i, j];
+                        }
+                        else
+                        {
+                            currentJointAngle -= maxAngleChangePerUpdate;
+                        }
+                    }
+                    currentJointAngles[jointOrder[(i * 3) + j]] = currentJointAngle;
+
+                }
             }
+
+            /*
+            currentJointAngles[21] = currentJointTargets[0, 0] ;
+            currentJointAngles[22] = currentJointTargets[0, 1] ;
+            currentJointAngles[29] = currentJointTargets[0, 2] ;
+
+            currentJointAngles[15] = currentJointTargets[1, 0] ;
+            currentJointAngles[16] = currentJointTargets[1, 1] ;
+            currentJointAngles[27] = currentJointTargets[1, 2] ;
+
+            currentJointAngles[12] = currentJointTargets[2, 0] ;
+            currentJointAngles[13] = currentJointTargets[2, 1] ;
+            currentJointAngles[26] = currentJointTargets[2, 2] ;
+
+            currentJointAngles[18] = currentJointTargets[3, 0] ;
+            currentJointAngles[19] = currentJointTargets[3, 1] ;
+            currentJointAngles[28] = currentJointTargets[3, 2] ;
+
+            currentJointAngles[6] = currentJointTargets[4, 0] ;
+            currentJointAngles[7] = currentJointTargets[4, 1] ;
+            currentJointAngles[24] = currentJointTargets[4, 2] ;
+
+            currentJointAngles[9] = currentJointTargets[5, 0] ;
+            currentJointAngles[10] = currentJointTargets[5, 1] ;
+            currentJointAngles[25] = currentJointTargets[5, 2] ;
+            */
+            GetComponent<ArticulationBody>().SetDriveTargets(currentJointAngles);
         }
 
-        /*
-        currentJointAngles[21] = currentJointTargets[0, 0] ;
-        currentJointAngles[22] = currentJointTargets[0, 1] ;
-        currentJointAngles[29] = currentJointTargets[0, 2] ;
-
-        currentJointAngles[15] = currentJointTargets[1, 0] ;
-        currentJointAngles[16] = currentJointTargets[1, 1] ;
-        currentJointAngles[27] = currentJointTargets[1, 2] ;
-
-        currentJointAngles[12] = currentJointTargets[2, 0] ;
-        currentJointAngles[13] = currentJointTargets[2, 1] ;
-        currentJointAngles[26] = currentJointTargets[2, 2] ;
-
-        currentJointAngles[18] = currentJointTargets[3, 0] ;
-        currentJointAngles[19] = currentJointTargets[3, 1] ;
-        currentJointAngles[28] = currentJointTargets[3, 2] ;
-
-        currentJointAngles[6] = currentJointTargets[4, 0] ;
-        currentJointAngles[7] = currentJointTargets[4, 1] ;
-        currentJointAngles[24] = currentJointTargets[4, 2] ;
-
-        currentJointAngles[9] = currentJointTargets[5, 0] ;
-        currentJointAngles[10] = currentJointTargets[5, 1] ;
-        currentJointAngles[25] = currentJointTargets[5, 2] ;
-        */
-
-        GetComponent<ArticulationBody>().SetDriveTargets(currentJointAngles);
     }
 
 }
