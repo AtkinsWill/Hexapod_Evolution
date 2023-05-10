@@ -9,7 +9,7 @@ public class Simulation_Control : MonoBehaviour
     public int seed = 0;
     public int numHexapods = 1;
     int num_sets = 6;
-    int num_neuron_per_set = 15;
+    int num_neuron_per_set = 5;
     public float crossoverRate = 0.4f;
     public float mutationRate = 0.2f;
     public float mutationAmount = 0.2f;
@@ -122,9 +122,10 @@ void InitaliseRandomWeights()
         
         GameObject hexapodController = hexapodControllers[controllerID];
         Hexapod_Control hexapod_control = hexapodController.GetComponent<Hexapod_Control>();
-       // Debug.Log("Setcontrollerweight controller ID");
+        // Debug.Log("Setcontrollerweight controller ID");
         //Debug.Log(controllerID);
         //Debug.Log(intraNW[2, 2, 2]);
+        PrintWeightsCSV(intraNW, "CSVdataOutput/HexapodID" + controllerID + "_step7_SetControllerWeights.csv");
         hexapod_control.setIntraNeuronWeights(intraNW);
         hexapod_control.setInputWeights(inputW);
         hexapod_control.setExoNeuronWeights(exoNW);
@@ -300,15 +301,22 @@ void InitaliseRandomWeights()
         // Old controllers that resulted in better fitness are on the wheel more, so will be more likely to be picked.
         // Then, assign the weights from the old controller to the new controller(s).
         int[] newControllers = new int[numHexapods];
+
         double[,,,] newAllIntraNW = new double[numHexapods, num_sets, num_neuron_per_set, num_neuron_per_set];
         double[,,,] newAllInputW = new double[numHexapods, num_sets, num_neuron_per_set, num_neuron_per_set];
         double[,,] newAllExoNW = new double[numHexapods, num_sets, num_neuron_per_set];
+        foreach (int x in rouletteWheel)
+        {
+            print(string.Format("gen {0} controller {1}", gencounter, x));
+        }
+        print(rouletteWheel.Count);
 
         for (int i = 0; i < numHexapods; i++)
         {
+            
             //PrintWeightsCSV4D(newAllIntraNW, i, "CSVdataOutput/HexapodID" + i + "_step2_PreRoulette.csv");
-            print(rouletteWheel.Count);
-            if (rouletteWheel.Count < numHexapods/2)
+
+            if (rouletteWheel.Count < 1)
             {
                 newControllers[i] = Random.Range(0, numHexapods);
             }
@@ -316,7 +324,8 @@ void InitaliseRandomWeights()
             {
                 newControllers[i] = rouletteWheel[Random.Range(0, rouletteWheel.Count - 1)];
             }
-            
+            print(string.Format("gen {0} controller {1} takes {2}", gencounter ,i, newControllers[i]));
+
             for (int j = 0; j < num_sets; j++)
             {
                 for (int k = 0; k < num_neuron_per_set; k++)
@@ -333,6 +342,11 @@ void InitaliseRandomWeights()
             //PrintWeightsCSV4D(newAllIntraNW, i, "CSVdataOutput/HexapodID" + i + "_step3_PostRoulette.csv");
 
         }
+        for (int i = 0; i <numHexapods; i++)
+        {
+            //PrintWeightsCSV4D(newAllIntraNW, i, "CSVdataOutput/HexapodID" + i + "_step4_PostAllRoulette.csv");
+        }
+
 
         //======================= Crossover new weights with each other =============================
         for (int i = 0; i < numHexapods; i += 2)
@@ -455,6 +469,7 @@ void InitaliseRandomWeights()
         double[,] newExoNW = new double[num_sets, num_neuron_per_set];
         for (int i = 0; i < numHexapods; i++)
         {
+            PrintWeightsCSV4D(newAllIntraNW, i, "CSVdataOutput/HexapodID" + i + "_step5_BeforeAssignment.csv");
             for (int j = 0; j < num_sets; j++)
             {
                 for (int k = 0; k < num_neuron_per_set; k++)
@@ -467,6 +482,7 @@ void InitaliseRandomWeights()
                     newExoNW[j, k] = newAllExoNW[i, j, k];
                 }
             }
+            PrintWeightsCSV(newIntraNW, "CSVdataOutput/HexapodID" + i + "_step6_PostAssignment.csv");
             setControllerWeights(i, newIntraNW, newExoNW, newInputW);
         }
 

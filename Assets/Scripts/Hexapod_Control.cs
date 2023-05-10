@@ -12,19 +12,23 @@ public class Hexapod_Control : MonoBehaviour
     public GameObject goal;
 
     private const int NumberOfSets = 6;
-    private const int NeuronsPerSet = 15;
-    private const int AngleInputs = 3;
+    private const int NeuronsPerSet = 5;
+    private const int AngleInputs = 2;
     //private const int Threshold = 0;
-    private double[,] neuronStates = new double[6, 15] { 
-        { 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f }, 
-        { 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f }, 
-        { 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f },
-        { 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f}, 
-        { 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f}, 
-        { 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f,  0.0f, 0.0f, 0.0f },
+    public double intraNW_2_2_2 = 0;
+    private double[,] neuronStates = new double[6, 5] 
+    { 
+        { 0.0f, 0.0f, 0.0f, 0.0f, 0.0f }, 
+        { 0.0f, 0.0f, 0.0f, 0.0f, 0.0f }, 
+        { 0.0f, 0.0f, 0.0f, 0.0f, 0.0f },
+        { 0.0f, 0.0f, 0.0f, 0.0f, 0.0f }, 
+        { 0.0f, 0.0f, 0.0f, 0.0f, 0.0f }, 
+        { 0.0f, 0.0f, 0.0f, 0.0f, 0.0f },
     };
-    public float[,] normalisedJointPositions = new float[6, 3] {   { 0.0f, 0.0f, 0.0f }, { 0.0f, 0.0f, 0.0f }, { 0.0f, 0.0f, 0.0f },
-                                                                { 0.0f, 0.0f, 0.0f }, { 0.0f, 0.0f, 0.0f }, { 0.0f, 0.0f, 0.0f } };
+    //, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f,  0.0f, 0.0f, 0.0f
+
+    public float[,] normalisedJointPositions = new float[6, 2] {   { 0.0f, 0.0f }, { 0.0f, 0.0f }, { 0.0f, 0.0f },
+                                                                { 0.0f, 0.0f}, { 0.0f, 0.0f }, { 0.0f, 0.0f } };
     //public float[,] feelers = new float[6, 2] { { 0.0f, 0.0f }, { 0.0f, 0.0f }, { 0.0f, 0.0f },
     //                                           { 0.0f, 0.0f }, { 0.0f, 0.0f }, { 0.0f, 0.0f } };
 
@@ -114,11 +118,11 @@ public class Hexapod_Control : MonoBehaviour
     public float[,] getNormalisedJointPositions()
     {
         float[,] jointAngles = hexapod.GetComponent<Body_Control>().currentJointTargets;
-        float[,] normalisedJointAngles = new float[6, 3]{   { 0.0f, 0.0f, 0.0f }, { 0.0f, 0.0f, 0.0f }, { 0.0f, 0.0f, 0.0f },
-                                                           { 0.0f, 0.0f, 0.0f }, { 0.0f, 0.0f, 0.0f }, { 0.0f, 0.0f, 0.0f } };
+        float[,] normalisedJointAngles = new float[6, 2]{   { 0.0f, 0.0f }, { 0.0f, 0.0f }, { 0.0f, 0.0f },
+                                                           { 0.0f, 0.0f }, { 0.0f, 0.0f }, { 0.0f, 0.0f } };
         for (int i = 0; i < 6; i++)
         {
-            for (int j = 0; j < 3; j++)
+            for (int j = 0; j < 2; j++)
             {
                 normalisedJointAngles[i, j] = jointAngles[i, j] / maximumJointAngle;
 
@@ -134,7 +138,7 @@ public class Hexapod_Control : MonoBehaviour
         for (int i = 0; i < 6; i++)
         {
             int k = 0;
-            for (int j = 0; j < 3; j++)
+            for (int j = 0; j < 2; j++)
             {
                // print((float)neuronStates[i, k]);
                 body_control.currentJointTargets[i, j] = (float)neuronStates[i, k] * maximumJointAngle;
@@ -185,6 +189,7 @@ public class Hexapod_Control : MonoBehaviour
 
     void Update()
     {
+        intraNW_2_2_2 = intraNeuronWeights[2, 2, 2];
         currentTime += Time.deltaTime;
         //   Debug.Log("This is in hexapod control update");
         //   Debug.Log(gameObject.GetInstanceID());
@@ -237,10 +242,10 @@ public class Hexapod_Control : MonoBehaviour
                 //{
                 weightedSum += (normalisedJointPositions[i, 0] + 1) * inputWeights[i, 0, j];
                 weightedSum += (normalisedJointPositions[i, 1] + 1) * inputWeights[i, 1, j];
-                weightedSum += (normalisedJointPositions[i, 2] + 1) * inputWeights[i, 2, j];
-                //weightedSum += (normalisedAngleToGoal + 1) * inputWeights[i, 3, j];
-                weightedSum += (normalisedDistanceToGoal + 1) * inputWeights[i, 4, j];
-                val = Mathf.Sin(4f * currentTime / 3.14f);
+                //weightedSum += (normalisedJointPositions[i, 2] + 1) * inputWeights[i, 2, j];
+                weightedSum += (normalisedAngleToGoal + 1) * inputWeights[i, 2, j];
+                //weightedSum += (normalisedDistanceToGoal + 1) * inputWeights[i, 4, j];
+                //val = Mathf.Sin(4f * currentTime / 3.14f);
                 weightedSum += (val) * inputWeights[i, 3, j];
 
                 //}
