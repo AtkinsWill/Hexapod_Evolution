@@ -184,6 +184,10 @@ PrefabInstance:
       propertyPath: m_Enabled
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 21993490004212587, guid: 7d3b01874a9aa0d41a246b10c6c50a32, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: c0bb9c97181946a479781843e64f21ae, type: 2}
     - target: {fileID: 151434801671013071, guid: 7d3b01874a9aa0d41a246b10c6c50a32, type: 3}
       propertyPath: m_IsActive
       value: 1
@@ -214,7 +218,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2576023019695995727, guid: 7d3b01874a9aa0d41a246b10c6c50a32, type: 3}
       propertyPath: m_ParentAnchorPosition.z
-      value: -1
+      value: -2
       objectReference: {fileID: 0}
     - target: {fileID: 3053760696253959721, guid: 7d3b01874a9aa0d41a246b10c6c50a32, type: 3}
       propertyPath: m_IsActive
@@ -222,11 +226,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4143555826488338693, guid: 7d3b01874a9aa0d41a246b10c6c50a32, type: 3}
       propertyPath: m_Twist
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4143555826488338693, guid: 7d3b01874a9aa0d41a246b10c6c50a32, type: 3}
       propertyPath: m_SwingY
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4143555826488338693, guid: 7d3b01874a9aa0d41a246b10c6c50a32, type: 3}
       propertyPath: m_SwingZ
@@ -238,11 +242,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4143555826488338693, guid: 7d3b01874a9aa0d41a246b10c6c50a32, type: 3}
       propertyPath: m_XDrive.damping
-      value: 0
+      value: 1000000
       objectReference: {fileID: 0}
     - target: {fileID: 4143555826488338693, guid: 7d3b01874a9aa0d41a246b10c6c50a32, type: 3}
       propertyPath: m_YDrive.damping
-      value: 0
+      value: 1000000
       objectReference: {fileID: 0}
     - target: {fileID: 4143555826488338693, guid: 7d3b01874a9aa0d41a246b10c6c50a32, type: 3}
       propertyPath: m_AnchorRotation.w
@@ -274,19 +278,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4143555826488338693, guid: 7d3b01874a9aa0d41a246b10c6c50a32, type: 3}
       propertyPath: m_XDrive.lowerLimit
-      value: -45
+      value: -70
       objectReference: {fileID: 0}
     - target: {fileID: 4143555826488338693, guid: 7d3b01874a9aa0d41a246b10c6c50a32, type: 3}
       propertyPath: m_XDrive.upperLimit
-      value: 45
+      value: 70
       objectReference: {fileID: 0}
     - target: {fileID: 4143555826488338693, guid: 7d3b01874a9aa0d41a246b10c6c50a32, type: 3}
       propertyPath: m_YDrive.lowerLimit
-      value: -45
+      value: -70
       objectReference: {fileID: 0}
     - target: {fileID: 4143555826488338693, guid: 7d3b01874a9aa0d41a246b10c6c50a32, type: 3}
       propertyPath: m_YDrive.upperLimit
-      value: 45
+      value: 70
       objectReference: {fileID: 0}
     - target: {fileID: 4143555826488338693, guid: 7d3b01874a9aa0d41a246b10c6c50a32, type: 3}
       propertyPath: m_ArticulationJointType
@@ -372,6 +376,10 @@ PrefabInstance:
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: c0bb9c97181946a479781843e64f21ae, type: 2}
+    - target: {fileID: 5938133722562009690, guid: 7d3b01874a9aa0d41a246b10c6c50a32, type: 3}
+      propertyPath: m_ParentAnchorPosition.z
+      value: -1.5
+      objectReference: {fileID: 0}
     - target: {fileID: 6114151064136332076, guid: 7d3b01874a9aa0d41a246b10c6c50a32, type: 3}
       propertyPath: m_IsActive
       value: 1
@@ -416,7 +424,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1002623397566086934, guid: 117888c5256cffd43806f03d7dab009c, type: 3}
       propertyPath: m_ParentAnchorPosition.z
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 2833152067684348470, guid: 117888c5256cffd43806f03d7dab009c, type: 3}
       propertyPath: m_UseGravity
@@ -424,7 +432,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2833152067684348470, guid: 117888c5256cffd43806f03d7dab009c, type: 3}
       propertyPath: m_ParentAnchorPosition.z
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 3865810762156705671, guid: 117888c5256cffd43806f03d7dab009c, type: 3}
       propertyPath: m_UseGravity
@@ -436,11 +444,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5991010102533694788, guid: 117888c5256cffd43806f03d7dab009c, type: 3}
       propertyPath: m_Twist
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5991010102533694788, guid: 117888c5256cffd43806f03d7dab009c, type: 3}
       propertyPath: m_SwingY
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5991010102533694788, guid: 117888c5256cffd43806f03d7dab009c, type: 3}
       propertyPath: m_SwingZ
@@ -452,11 +460,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5991010102533694788, guid: 117888c5256cffd43806f03d7dab009c, type: 3}
       propertyPath: m_XDrive.damping
-      value: 0
+      value: 1000000
       objectReference: {fileID: 0}
     - target: {fileID: 5991010102533694788, guid: 117888c5256cffd43806f03d7dab009c, type: 3}
       propertyPath: m_YDrive.damping
-      value: 0
+      value: 1000000
       objectReference: {fileID: 0}
     - target: {fileID: 5991010102533694788, guid: 117888c5256cffd43806f03d7dab009c, type: 3}
       propertyPath: m_AnchorRotation.w
@@ -480,19 +488,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5991010102533694788, guid: 117888c5256cffd43806f03d7dab009c, type: 3}
       propertyPath: m_XDrive.lowerLimit
-      value: -45
+      value: -70
       objectReference: {fileID: 0}
     - target: {fileID: 5991010102533694788, guid: 117888c5256cffd43806f03d7dab009c, type: 3}
       propertyPath: m_XDrive.upperLimit
-      value: 45
+      value: 70
       objectReference: {fileID: 0}
     - target: {fileID: 5991010102533694788, guid: 117888c5256cffd43806f03d7dab009c, type: 3}
       propertyPath: m_YDrive.lowerLimit
-      value: -45
+      value: -70
       objectReference: {fileID: 0}
     - target: {fileID: 5991010102533694788, guid: 117888c5256cffd43806f03d7dab009c, type: 3}
       propertyPath: m_YDrive.upperLimit
-      value: 45
+      value: 70
       objectReference: {fileID: 0}
     - target: {fileID: 5991010102533694788, guid: 117888c5256cffd43806f03d7dab009c, type: 3}
       propertyPath: m_ArticulationJointType
@@ -578,6 +586,10 @@ PrefabInstance:
       propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 9120712707468542489, guid: 117888c5256cffd43806f03d7dab009c, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: c0bb9c97181946a479781843e64f21ae, type: 2}
     - target: {fileID: 9120712708027732324, guid: 117888c5256cffd43806f03d7dab009c, type: 3}
       propertyPath: m_Material
       value: 
@@ -626,7 +638,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1002623397566086934, guid: 117888c5256cffd43806f03d7dab009c, type: 3}
       propertyPath: m_ParentAnchorPosition.z
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 2833152067684348470, guid: 117888c5256cffd43806f03d7dab009c, type: 3}
       propertyPath: m_UseGravity
@@ -634,15 +646,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2833152067684348470, guid: 117888c5256cffd43806f03d7dab009c, type: 3}
       propertyPath: m_ParentAnchorPosition.z
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 5991010102533694788, guid: 117888c5256cffd43806f03d7dab009c, type: 3}
       propertyPath: m_Twist
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5991010102533694788, guid: 117888c5256cffd43806f03d7dab009c, type: 3}
       propertyPath: m_SwingY
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5991010102533694788, guid: 117888c5256cffd43806f03d7dab009c, type: 3}
       propertyPath: m_SwingZ
@@ -654,11 +666,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5991010102533694788, guid: 117888c5256cffd43806f03d7dab009c, type: 3}
       propertyPath: m_XDrive.damping
-      value: 0
+      value: 1000000
       objectReference: {fileID: 0}
     - target: {fileID: 5991010102533694788, guid: 117888c5256cffd43806f03d7dab009c, type: 3}
       propertyPath: m_YDrive.damping
-      value: 0
+      value: 1000000
       objectReference: {fileID: 0}
     - target: {fileID: 5991010102533694788, guid: 117888c5256cffd43806f03d7dab009c, type: 3}
       propertyPath: m_AnchorRotation.w
@@ -682,19 +694,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5991010102533694788, guid: 117888c5256cffd43806f03d7dab009c, type: 3}
       propertyPath: m_XDrive.lowerLimit
-      value: -45
+      value: -70
       objectReference: {fileID: 0}
     - target: {fileID: 5991010102533694788, guid: 117888c5256cffd43806f03d7dab009c, type: 3}
       propertyPath: m_XDrive.upperLimit
-      value: 45
+      value: 70
       objectReference: {fileID: 0}
     - target: {fileID: 5991010102533694788, guid: 117888c5256cffd43806f03d7dab009c, type: 3}
       propertyPath: m_YDrive.lowerLimit
-      value: -45
+      value: -70
       objectReference: {fileID: 0}
     - target: {fileID: 5991010102533694788, guid: 117888c5256cffd43806f03d7dab009c, type: 3}
       propertyPath: m_YDrive.upperLimit
-      value: 45
+      value: 70
       objectReference: {fileID: 0}
     - target: {fileID: 5991010102533694788, guid: 117888c5256cffd43806f03d7dab009c, type: 3}
       propertyPath: m_ArticulationJointType
@@ -772,6 +784,10 @@ PrefabInstance:
       propertyPath: m_Enabled
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 9120712707468542489, guid: 117888c5256cffd43806f03d7dab009c, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: c0bb9c97181946a479781843e64f21ae, type: 2}
     - target: {fileID: 9120712707468542492, guid: 117888c5256cffd43806f03d7dab009c, type: 3}
       propertyPath: m_IsActive
       value: 1
@@ -810,6 +826,10 @@ PrefabInstance:
       propertyPath: m_Enabled
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 21993490004212587, guid: 7d3b01874a9aa0d41a246b10c6c50a32, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: c0bb9c97181946a479781843e64f21ae, type: 2}
     - target: {fileID: 151434801671013071, guid: 7d3b01874a9aa0d41a246b10c6c50a32, type: 3}
       propertyPath: m_IsActive
       value: 1
@@ -836,7 +856,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2576023019695995727, guid: 7d3b01874a9aa0d41a246b10c6c50a32, type: 3}
       propertyPath: m_ParentAnchorPosition.z
-      value: -1
+      value: -2
       objectReference: {fileID: 0}
     - target: {fileID: 3053760696253959721, guid: 7d3b01874a9aa0d41a246b10c6c50a32, type: 3}
       propertyPath: m_IsActive
@@ -844,11 +864,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4143555826488338693, guid: 7d3b01874a9aa0d41a246b10c6c50a32, type: 3}
       propertyPath: m_Twist
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4143555826488338693, guid: 7d3b01874a9aa0d41a246b10c6c50a32, type: 3}
       propertyPath: m_SwingY
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4143555826488338693, guid: 7d3b01874a9aa0d41a246b10c6c50a32, type: 3}
       propertyPath: m_SwingZ
@@ -860,11 +880,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4143555826488338693, guid: 7d3b01874a9aa0d41a246b10c6c50a32, type: 3}
       propertyPath: m_XDrive.damping
-      value: 0
+      value: 1000000
       objectReference: {fileID: 0}
     - target: {fileID: 4143555826488338693, guid: 7d3b01874a9aa0d41a246b10c6c50a32, type: 3}
       propertyPath: m_YDrive.damping
-      value: 0
+      value: 1000000
       objectReference: {fileID: 0}
     - target: {fileID: 4143555826488338693, guid: 7d3b01874a9aa0d41a246b10c6c50a32, type: 3}
       propertyPath: m_AnchorRotation.w
@@ -896,19 +916,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4143555826488338693, guid: 7d3b01874a9aa0d41a246b10c6c50a32, type: 3}
       propertyPath: m_XDrive.lowerLimit
-      value: -45
+      value: -70
       objectReference: {fileID: 0}
     - target: {fileID: 4143555826488338693, guid: 7d3b01874a9aa0d41a246b10c6c50a32, type: 3}
       propertyPath: m_XDrive.upperLimit
-      value: 45
+      value: 70
       objectReference: {fileID: 0}
     - target: {fileID: 4143555826488338693, guid: 7d3b01874a9aa0d41a246b10c6c50a32, type: 3}
       propertyPath: m_YDrive.lowerLimit
-      value: -45
+      value: -70
       objectReference: {fileID: 0}
     - target: {fileID: 4143555826488338693, guid: 7d3b01874a9aa0d41a246b10c6c50a32, type: 3}
       propertyPath: m_YDrive.upperLimit
-      value: 45
+      value: 70
       objectReference: {fileID: 0}
     - target: {fileID: 4143555826488338693, guid: 7d3b01874a9aa0d41a246b10c6c50a32, type: 3}
       propertyPath: m_ArticulationJointType
@@ -994,6 +1014,10 @@ PrefabInstance:
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: c0bb9c97181946a479781843e64f21ae, type: 2}
+    - target: {fileID: 5938133722562009690, guid: 7d3b01874a9aa0d41a246b10c6c50a32, type: 3}
+      propertyPath: m_ParentAnchorPosition.z
+      value: -1.5
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7d3b01874a9aa0d41a246b10c6c50a32, type: 3}
 --- !u!4 &198347060251808271 stripped
@@ -1012,6 +1036,10 @@ PrefabInstance:
       propertyPath: m_Enabled
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 21993490004212587, guid: 7d3b01874a9aa0d41a246b10c6c50a32, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: c0bb9c97181946a479781843e64f21ae, type: 2}
     - target: {fileID: 151434801671013071, guid: 7d3b01874a9aa0d41a246b10c6c50a32, type: 3}
       propertyPath: m_IsActive
       value: 1
@@ -1038,7 +1066,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2576023019695995727, guid: 7d3b01874a9aa0d41a246b10c6c50a32, type: 3}
       propertyPath: m_ParentAnchorPosition.z
-      value: -1
+      value: -2
       objectReference: {fileID: 0}
     - target: {fileID: 3053760696253959721, guid: 7d3b01874a9aa0d41a246b10c6c50a32, type: 3}
       propertyPath: m_IsActive
@@ -1046,11 +1074,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4143555826488338693, guid: 7d3b01874a9aa0d41a246b10c6c50a32, type: 3}
       propertyPath: m_Twist
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4143555826488338693, guid: 7d3b01874a9aa0d41a246b10c6c50a32, type: 3}
       propertyPath: m_SwingY
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4143555826488338693, guid: 7d3b01874a9aa0d41a246b10c6c50a32, type: 3}
       propertyPath: m_SwingZ
@@ -1062,11 +1090,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4143555826488338693, guid: 7d3b01874a9aa0d41a246b10c6c50a32, type: 3}
       propertyPath: m_XDrive.damping
-      value: 0
+      value: 1000000
       objectReference: {fileID: 0}
     - target: {fileID: 4143555826488338693, guid: 7d3b01874a9aa0d41a246b10c6c50a32, type: 3}
       propertyPath: m_YDrive.damping
-      value: 0
+      value: 1000000
       objectReference: {fileID: 0}
     - target: {fileID: 4143555826488338693, guid: 7d3b01874a9aa0d41a246b10c6c50a32, type: 3}
       propertyPath: m_AnchorRotation.w
@@ -1098,19 +1126,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4143555826488338693, guid: 7d3b01874a9aa0d41a246b10c6c50a32, type: 3}
       propertyPath: m_XDrive.lowerLimit
-      value: -45
+      value: -70
       objectReference: {fileID: 0}
     - target: {fileID: 4143555826488338693, guid: 7d3b01874a9aa0d41a246b10c6c50a32, type: 3}
       propertyPath: m_XDrive.upperLimit
-      value: 45
+      value: 70
       objectReference: {fileID: 0}
     - target: {fileID: 4143555826488338693, guid: 7d3b01874a9aa0d41a246b10c6c50a32, type: 3}
       propertyPath: m_YDrive.lowerLimit
-      value: -45
+      value: -70
       objectReference: {fileID: 0}
     - target: {fileID: 4143555826488338693, guid: 7d3b01874a9aa0d41a246b10c6c50a32, type: 3}
       propertyPath: m_YDrive.upperLimit
-      value: 45
+      value: 70
       objectReference: {fileID: 0}
     - target: {fileID: 4143555826488338693, guid: 7d3b01874a9aa0d41a246b10c6c50a32, type: 3}
       propertyPath: m_ArticulationJointType
@@ -1196,6 +1224,10 @@ PrefabInstance:
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: c0bb9c97181946a479781843e64f21ae, type: 2}
+    - target: {fileID: 5938133722562009690, guid: 7d3b01874a9aa0d41a246b10c6c50a32, type: 3}
+      propertyPath: m_ParentAnchorPosition.z
+      value: -1.5
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7d3b01874a9aa0d41a246b10c6c50a32, type: 3}
 --- !u!4 &198347060797028770 stripped
@@ -1224,15 +1256,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1002623397566086934, guid: 117888c5256cffd43806f03d7dab009c, type: 3}
       propertyPath: m_ParentAnchorPosition.z
-      value: 1
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2833152067684348470, guid: 117888c5256cffd43806f03d7dab009c, type: 3}
+      propertyPath: m_ParentAnchorPosition.z
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 5991010102533694788, guid: 117888c5256cffd43806f03d7dab009c, type: 3}
       propertyPath: m_Twist
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5991010102533694788, guid: 117888c5256cffd43806f03d7dab009c, type: 3}
       propertyPath: m_SwingY
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5991010102533694788, guid: 117888c5256cffd43806f03d7dab009c, type: 3}
       propertyPath: m_SwingZ
@@ -1244,11 +1280,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5991010102533694788, guid: 117888c5256cffd43806f03d7dab009c, type: 3}
       propertyPath: m_XDrive.damping
-      value: 0
+      value: 1000000
       objectReference: {fileID: 0}
     - target: {fileID: 5991010102533694788, guid: 117888c5256cffd43806f03d7dab009c, type: 3}
       propertyPath: m_YDrive.damping
-      value: 0
+      value: 1000000
       objectReference: {fileID: 0}
     - target: {fileID: 5991010102533694788, guid: 117888c5256cffd43806f03d7dab009c, type: 3}
       propertyPath: m_AnchorRotation.w
@@ -1272,19 +1308,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5991010102533694788, guid: 117888c5256cffd43806f03d7dab009c, type: 3}
       propertyPath: m_XDrive.lowerLimit
-      value: -45
+      value: -70
       objectReference: {fileID: 0}
     - target: {fileID: 5991010102533694788, guid: 117888c5256cffd43806f03d7dab009c, type: 3}
       propertyPath: m_XDrive.upperLimit
-      value: 45
+      value: 70
       objectReference: {fileID: 0}
     - target: {fileID: 5991010102533694788, guid: 117888c5256cffd43806f03d7dab009c, type: 3}
       propertyPath: m_YDrive.lowerLimit
-      value: -45
+      value: -70
       objectReference: {fileID: 0}
     - target: {fileID: 5991010102533694788, guid: 117888c5256cffd43806f03d7dab009c, type: 3}
       propertyPath: m_YDrive.upperLimit
-      value: 45
+      value: 70
       objectReference: {fileID: 0}
     - target: {fileID: 5991010102533694788, guid: 117888c5256cffd43806f03d7dab009c, type: 3}
       propertyPath: m_ArticulationJointType
@@ -1362,6 +1398,10 @@ PrefabInstance:
       propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 9120712707468542489, guid: 117888c5256cffd43806f03d7dab009c, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: c0bb9c97181946a479781843e64f21ae, type: 2}
     - target: {fileID: 9120712707468542492, guid: 117888c5256cffd43806f03d7dab009c, type: 3}
       propertyPath: m_IsActive
       value: 1

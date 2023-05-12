@@ -80,34 +80,49 @@ public class Body_Control : MonoBehaviour
                 }
             }
 
-            /*
-            currentJointAngles[21] = currentJointTargets[0, 0] ;
-            currentJointAngles[22] = currentJointTargets[0, 1] ;
-            currentJointAngles[29] = currentJointTargets[0, 2] ;
-
-            currentJointAngles[15] = currentJointTargets[1, 0] ;
-            currentJointAngles[16] = currentJointTargets[1, 1] ;
-            currentJointAngles[27] = currentJointTargets[1, 2] ;
-
-            currentJointAngles[12] = currentJointTargets[2, 0] ;
-            currentJointAngles[13] = currentJointTargets[2, 1] ;
-            currentJointAngles[26] = currentJointTargets[2, 2] ;
-
-            currentJointAngles[18] = currentJointTargets[3, 0] ;
-            currentJointAngles[19] = currentJointTargets[3, 1] ;
-            currentJointAngles[28] = currentJointTargets[3, 2] ;
-
-            currentJointAngles[6] = currentJointTargets[4, 0] ;
-            currentJointAngles[7] = currentJointTargets[4, 1] ;
-            currentJointAngles[24] = currentJointTargets[4, 2] ;
-
-            currentJointAngles[9] = currentJointTargets[5, 0] ;
-            currentJointAngles[10] = currentJointTargets[5, 1] ;
-            currentJointAngles[25] = currentJointTargets[5, 2] ;
-            */
-            GetComponent<ArticulationBody>().SetDriveTargets(currentJointAngles);
+            // GetComponent<ArticulationBody>().SetDriveTargets(currentJointAngles);
+            GetComponent<ArticulationBody>().SetDriveTargetVelocities(currentJointAngles);
         }
 
     }
 
+    public float[,] getJointAngles()
+    {
+        List<float> positions = new List<float> { 21, 22, 15, 16, 12, 13, 18, 19, 6, 7, 9, 10};
+
+        float[] jointPositions = new float[12];
+        ArticulationReducedSpace jointAngle;
+        float[,] jointAngles = new float[6, 2] { { 0.0f, 0.0f }, { 0.0f, 0.0f }, { 0.0f, 0.0f }, { 0.0f, 0.0f }, { 0.0f, 0.0f }, { 0.0f, 0.0f } };
+        //artic
+        for (int i = 0; i < 6; i++)
+        {
+            ArticulationBody hip = gameObject.transform.GetChild(i).GetComponent<ArticulationBody>();
+            jointAngle = hip.jointPosition;
+
+            jointAngles[i, 0] =( jointAngle[0] % 360)/360;
+            jointAngles[i, 1] = (jointAngle[1] % 360) /360;
+
+            //jointAngles[i, j] = jointOrder[(i * 3) + j];
+            // gameObject.GetComponent<ArticulationBody>().GetDriveTargets)
+
+        }
+        return jointAngles;
+    }
+
+    public float getBodyAngle()
+    {
+        float angle = gameObject.transform.rotation.x;
+        if (angle < 0)
+        {
+            angle = angle * -1;
+        }
+        angle = angle / 180;
+
+        return angle;
+
+    }
 }
+
+/*
+ *     
+*/

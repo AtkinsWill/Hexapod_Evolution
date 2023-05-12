@@ -15,7 +15,7 @@ public class Hexapod_Control : MonoBehaviour
     private const int NeuronsPerSet = 5;
     private const int AngleInputs = 2;
     //private const int Threshold = 0;
-    public double intraNW_2_2_2 = 0;
+    public double intraNW_0_1_1 = 0;
     private double[,] neuronStates = new double[6, 5] 
     { 
         { 0.0f, 0.0f, 0.0f, 0.0f, 0.0f }, 
@@ -111,7 +111,6 @@ public class Hexapod_Control : MonoBehaviour
         {
             normalisedDistance = -1;
         }
-        //print(normalisedDistance);
         return normalisedDistance;
     }
 
@@ -124,7 +123,7 @@ public class Hexapod_Control : MonoBehaviour
         {
             for (int j = 0; j < 2; j++)
             {
-                normalisedJointAngles[i, j] = jointAngles[i, j] / maximumJointAngle;
+                normalisedJointAngles[i, j] = jointAngles[i, j] / maximumJointVelocity;
 
             }
         }
@@ -141,7 +140,7 @@ public class Hexapod_Control : MonoBehaviour
             for (int j = 0; j < 2; j++)
             {
                // print((float)neuronStates[i, k]);
-                body_control.currentJointTargets[i, j] = (float)neuronStates[i, k] * maximumJointAngle;
+                body_control.currentJointTargets[i, j] = (float)neuronStates[i, k] * maximumJointVelocity;
                 //Debug.Log("Joint angle");
 
                 // Debug.Log(neuronStates[i, k]);
@@ -153,11 +152,23 @@ public class Hexapod_Control : MonoBehaviour
 
     }
 
+    public float[,] getJointAngles()
+    {
+        float[,] jointAngles = hexapod.GetComponent<Body_Control>().getJointAngles();
+        return jointAngles;
+    }
+
+    public float getBodyAngle()
+    {
+        return hexapod.GetComponent<Body_Control>().getBodyAngle();
+    }
+
 
     public void setIntraNeuronWeights(double[,,] intraNW)
     {
-       // Debug.Log(gameObject.GetInstanceID());
-       // Debug.Log(intraNW[2, 2, 2]);
+        // Debug.Log(gameObject.GetInstanceID());
+        // Debug.Log(intraNW[2, 2, 2]);
+
         intraNeuronWeights = intraNW;
         //PrintWeightsCSV(intraNW, "CSVdataOutput/something" + intraNeuronWeights[2, 2, 2] + ".csv");
 
@@ -189,7 +200,7 @@ public class Hexapod_Control : MonoBehaviour
 
     void Update()
     {
-        intraNW_2_2_2 = intraNeuronWeights[2, 2, 2];
+        intraNW_0_1_1 = intraNeuronWeights[0,0,0];
         currentTime += Time.deltaTime;
         //   Debug.Log("This is in hexapod control update");
         //   Debug.Log(gameObject.GetInstanceID());
@@ -197,7 +208,8 @@ public class Hexapod_Control : MonoBehaviour
         // Add a matrix to store the membrane potentials for each neuron
         double[,] membranePotentials = new double[NumberOfSets, NeuronsPerSet];
 
-        normalisedJointPositions = getNormalisedJointPositions();
+        // normalisedJointPositions = getNormalisedJointPositions();
+        normalisedJointPositions = getJointAngles();
         //print(normalisedJointPositions[1, 1]);
         normalisedDistanceToGoal = getNormalisedDistanceToGoal();
         normalisedAngleToGoal = getNormalisedAngleToGoal();
@@ -223,7 +235,7 @@ public class Hexapod_Control : MonoBehaviour
                     //prevents self connections
                     if (j != k)
                     {
-                        weightedSum += neuronStates[i, j] * intraNeuronWeights[i, j, k];
+                        weightedSum += neuronStates[j, k] * intraNeuronWeights[0, j, k];
                     }
                 }
 
@@ -243,10 +255,12 @@ public class Hexapod_Control : MonoBehaviour
                 weightedSum += (normalisedJointPositions[i, 0] + 1) * inputWeights[i, 0, j];
                 weightedSum += (normalisedJointPositions[i, 1] + 1) * inputWeights[i, 1, j];
                 //weightedSum += (normalisedJointPositions[i, 2] + 1) * inputWeights[i, 2, j];
-                weightedSum += (normalisedAngleToGoal + 1) * inputWeights[i, 2, j];
-                //weightedSum += (normalisedDistanceToGoal + 1) * inputWeights[i, 4, j];
+                //weightedSum += (normalisedAngleToGoal + 1) * inputWeights[i, 2, j];
+                weightedSum += (currentTime) * inputWeights[i, 2, j];
+
+                weightedSum += (normalisedDistanceToGoal + 1) * inputWeights[i, 3, j];
                 //val = Mathf.Sin(4f * currentTime / 3.14f);
-                weightedSum += (val) * inputWeights[i, 3, j];
+                //weightedSum += (val) * inputWeights[i, 3, j];
 
                 //}
 
@@ -338,4 +352,23 @@ public class Hexapod_Control : MonoBehaviour
         }
     }
 
+    public void saveJointTargetValues()
+    {
+        if (hexapod != null){
+            int i = 0;
+            List<float> jointValues = hexapod.GetComponent<Body_Control>().currentJointAngles;
+            using (StreamWriter streamWriter = File.AppendText("E:/Unity/Evolving_Hexapod/CSVdataOutput/joint_values.csv"))
+            {
+                foreach (float value in jointValues)
+                {
+                    if (i > 6 && i < 22)
+                    {
+                        streamWriter.Write(value.ToString() + ",");
+                    }
+                }
+                streamWriter.WriteLine();
+            }
+        }
+        
+    }
 }

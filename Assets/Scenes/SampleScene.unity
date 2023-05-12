@@ -267,7 +267,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   seed: 12
-  numHexapods: 10
+  numHexapods: 100
   crossoverRate: 0.5
   mutationRate: 0.5
   mutationAmount: 0.5

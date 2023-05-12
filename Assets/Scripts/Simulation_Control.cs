@@ -213,7 +213,7 @@ void InitaliseRandomWeights()
         for (int i = 0; i < numHexapods; i++)
         {
             //preferable if in this loop weights get assigned to robots?
-            GameObject newHexapod = Instantiate(hexapodPrefab, new Vector3(0, 1.01f, (float)i * 25), Quaternion.identity) as GameObject;
+            GameObject newHexapod = Instantiate(hexapodPrefab, new Vector3(0, 3f, (float)i * 25), Quaternion.identity) as GameObject;
             newHexapod.GetComponent<ArticulationBody>().velocity = Vector3.zero;
             newHexapod.GetComponent<ArticulationBody>().angularVelocity= Vector3.zero;
             newHexapod.GetComponent<ArticulationBody>().immovable = true;
@@ -244,12 +244,8 @@ void InitaliseRandomWeights()
 
     void runIteration()
     {
-        int i = 0;
-        foreach (GameObject hexapod in hexapods)
-        {
-            //hexapod.GetComponent<Body_Control>().setJointTargets(angle * weights[i]);
-            i++;
-        }
+        hexapodControllers[0].GetComponent<Hexapod_Control>().saveJointTargetValues();
+
     }
 
     void evaluate()
@@ -273,11 +269,11 @@ void InitaliseRandomWeights()
             Hexapod_Control hexapod_control = hexapodController.GetComponent<Hexapod_Control>();
             //print(hexapod_control.getNormalisedDistanceToGoal());
             hexapodFitnesses[i] = (hexapod_control.getNormalisedDistanceToGoal());
+            hexapodFitnesses[i] -= (hexapod_control.getBodyAngle());
             totalFitness += hexapodFitnesses[i];
         }
         //print(totalFitness);
-        print(Mathf.Max(hexapodFitnesses));
-        print(totalFitness / numHexapods);
+        saveFitness(Mathf.Max(hexapodFitnesses), totalFitness / numHexapods);
         destroyHexapods();
 
         //======================= Build a roulette wheel =============================
@@ -324,7 +320,7 @@ void InitaliseRandomWeights()
             {
                 newControllers[i] = rouletteWheel[Random.Range(0, rouletteWheel.Count - 1)];
             }
-            print(string.Format("gen {0} controller {1} takes {2}", gencounter ,i, newControllers[i]));
+           // print(string.Format("gen {0} controller {1} takes {2}", gencounter ,i, newControllers[i]));
 
             for (int j = 0; j < num_sets; j++)
             {
@@ -464,12 +460,13 @@ void InitaliseRandomWeights()
 
         //======================= Assign weights to the controllers =============================
         // Create a set of weights for a single controller so it can be sent to the right controller
-        double[,,] newIntraNW = new double[num_sets, num_neuron_per_set, num_neuron_per_set];
-        double[,,] newInputW = new double[num_sets, num_neuron_per_set, num_neuron_per_set];
-        double[,] newExoNW = new double[num_sets, num_neuron_per_set];
+        
         for (int i = 0; i < numHexapods; i++)
         {
-            PrintWeightsCSV4D(newAllIntraNW, i, "CSVdataOutput/HexapodID" + i + "_step5_BeforeAssignment.csv");
+            double[,,] newIntraNW = new double[num_sets, num_neuron_per_set, num_neuron_per_set];
+            double[,,] newInputW = new double[num_sets, num_neuron_per_set, num_neuron_per_set];
+            double[,] newExoNW = new double[num_sets, num_neuron_per_set];
+           // PrintWeightsCSV4D(newAllIntraNW, i, "CSVdataOutput/HexapodID" + i + "_step5_BeforeAssignment.csv");
             for (int j = 0; j < num_sets; j++)
             {
                 for (int k = 0; k < num_neuron_per_set; k++)
@@ -482,7 +479,7 @@ void InitaliseRandomWeights()
                     newExoNW[j, k] = newAllExoNW[i, j, k];
                 }
             }
-            PrintWeightsCSV(newIntraNW, "CSVdataOutput/HexapodID" + i + "_step6_PostAssignment.csv");
+           // PrintWeightsCSV(newIntraNW, "CSVdataOutput/HexapodID" + i + "_step6_PostAssignment.csv");
             setControllerWeights(i, newIntraNW, newExoNW, newInputW);
         }
 
@@ -619,6 +616,15 @@ void InitaliseRandomWeights()
         }
         PrintWeights(afterarray);
 
+
+    }
+
+    void saveFitness(float max, float average)
+    {
+        using (StreamWriter streamWriter = File.AppendText("E:/Unity/Evolving_Hexapod/CSVdataOutput/fitnesses.csv"))
+        {
+            streamWriter.WriteLine(max.ToString() + "," + average.ToString());
+        }
     }
 
 }
