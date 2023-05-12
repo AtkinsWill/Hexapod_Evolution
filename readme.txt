@@ -6,19 +6,20 @@ How to run the evolving hexapod simulation:
 /////////////////////////////////////////////////////////////////////
 Method 1 - run the program as a .exe
 !!!!! .exe can be supplied as a zip from a OneDrive link
+
 ---------------------------------------------------------------------
 
 Prerequisites: Windows OS
 
 Tested on Windows 10 and Windows 11.
 
-0. Gain access to the "Built_Hexapod.zip" directory which is not found on the Github.
+0. Gain access to the "Hexapod_Build.zip" directory which is not found on the Github.
 1. Extract the contents of the zip.
-2. Navigate to "Final_Evolving_Hexapod/Hexapod_Evolution/Builds"
+2. Navigate to "Hexapod_Build"
 3. Run "Evolving Heaxpod.exe"
 
 See the UI section for how to use the interface.
-Max and Mean fitness data for each iteration can be found in "Final_Evolving_Hexapod/Hexapod_Evolution/Builds/CSVdataOutput/fitnesses.csv"
+Max and Mean fitness data for each iteration can be found in "Hexapod_Build/CSVdataOutput/fitnesses.csv"
 
 
 
