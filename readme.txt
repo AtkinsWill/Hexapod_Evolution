@@ -35,6 +35,7 @@ Unity Hub v3.4.1
 Unity Editor version 2021.3.23f1
 
 A) Load project in Unity Editor:
+0. Download code from git as a zip.
 1. Extra the contents of the zip.
 2. Download Unity editor version 2021.3.23f1 from https://unity.com/releases/editor/qa/lts-releases
 3. Open Unity Hub
@@ -48,7 +49,7 @@ B) Run project:
 9. In the top centre you should see a Play, Pause, and third button. Click the Play button.
 
 See the UI section for how to use the interface.
-Max and Mean fitness data for each iteration can be found in "Final_Evolving_Hexapod/Hexapod_Evolution/CSVdataOutput/fitnesses.csv"
+Max and Mean fitness data for each iteration can be found in "CSVdataOutput/fitnesses.csv"
 
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
