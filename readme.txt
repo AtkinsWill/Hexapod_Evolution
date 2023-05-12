@@ -1,12 +1,12 @@
 Code can be found in 	
-"Final_Evolving_Hexapod\Hexapod_Evolution\Assets\Scripts"
+"Hexapod_Evolution\Assets\Scripts"
 
 How to run the evolving hexapod simulation:
 
 /////////////////////////////////////////////////////////////////////
 Method 1 - run the program as a .exe
 !!!!! .exe can be supplied as a zip from a OneDrive link
-
+https://leeds365-my.sharepoint.com/:u:/r/personal/el18wa_leeds_ac_uk/Documents/Hexapod_Build.zip?csf=1&web=1&e=CHFvyC 
 ---------------------------------------------------------------------
 
 Prerequisites: Windows OS
