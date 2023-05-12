@@ -35,7 +35,7 @@ Unity Hub v3.4.1
 Unity Editor version 2021.3.23f1
 
 A) Load project in Unity Editor:
-0. Download code from git as a zip.
+0. Download code from git main branch as a zip.
 1. Extra the contents of the zip.
 2. Download Unity editor version 2021.3.23f1 from https://unity.com/releases/editor/qa/lts-releases
 3. Open Unity Hub
