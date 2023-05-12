@@ -41,8 +41,8 @@ A) Load project in Unity Editor:
 3. Open Unity Hub
 4. In Installs tab, click Install Editor and install 2021.3.23f1
 5. In Projects tab, click arrow next to Open at the top, and select "Add project from disk".
-6. Navigate to the contents of the zip and navigate to "Final_Evolving_Hexapod", select "Hexapod_Evolution" and click "Add Project".
-7. In the Projects tab, open the project by clicking Hexapod_Evolution
+6. Navigate to the contents of the zip and navigate to "Evolving_Hexapod-main" and click "Add Project".
+7. In the Projects tab, open the project by clicking "Hexapod_Evolution-main"
 
 B) Run project:
 8. In the Unity Editor find the Project window, then navigate to "Assets/Scenes" and open "Sim" by double clicking. 
