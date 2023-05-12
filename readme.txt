@@ -5,12 +5,14 @@ How to run the evolving hexapod simulation:
 
 /////////////////////////////////////////////////////////////////////
 Method 1 - run the program as a .exe
+!!!!! .exe can be supplied as a zip from a OneDrive link
 ---------------------------------------------------------------------
 
 Prerequisites: Windows OS
 
 Tested on Windows 10 and Windows 11.
 
+0. Gain access to the "Built_Hexapod.zip" directory which is not found on the Github.
 1. Extract the contents of the zip.
 2. Navigate to "Final_Evolving_Hexapod/Hexapod_Evolution/Builds"
 3. Run "Evolving Heaxpod.exe"
@@ -31,6 +33,7 @@ Windows 10
 Unity Hub v3.4.1
 Unity Editor version 2021.3.23f1
 
+A) Load project in Unity Editor:
 1. Extra the contents of the zip.
 2. Download Unity editor version 2021.3.23f1 from https://unity.com/releases/editor/qa/lts-releases
 3. Open Unity Hub
@@ -38,7 +41,10 @@ Unity Editor version 2021.3.23f1
 5. In Projects tab, click arrow next to Open at the top, and select "Add project from disk".
 6. Navigate to the contents of the zip and navigate to "Final_Evolving_Hexapod", select "Hexapod_Evolution" and click "Add Project".
 7. In the Projects tab, open the project by clicking Hexapod_Evolution
-8. In the top centre you should see a Play, Pause, and third button. Click the Play button.
+
+B) Run project:
+8. In the Unity Editor find the Project window, then navigate to "Assets/Scenes" and open "Sim" by double clicking. 
+9. In the top centre you should see a Play, Pause, and third button. Click the Play button.
 
 See the UI section for how to use the interface.
 Max and Mean fitness data for each iteration can be found in "Final_Evolving_Hexapod/Hexapod_Evolution/CSVdataOutput/fitnesses.csv"
